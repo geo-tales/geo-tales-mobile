@@ -1,0 +1,91 @@
+body {
+  padding: 80px 0 70px 0;
+}
+
+#header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 80px;
+  border-bottom: 1px solid #ddd;
+  background-color: #fff;
+  z-index: 1;
+}
+
+#header h1 {
+  text-align: center;
+}
+
+.message {
+  display: none;
+}
+.warning .message {
+  display: block;
+  position: fixed;
+  top: 160px;
+  left: 50%;
+  margin-left: -80px;
+  width: 160px;
+  height: 50px;
+  font-size: 40px;
+  text-align: center;
+  color: #f30;
+  border: 2px solid #f30;
+  border-radius: 10px;
+}
+.warning .distance {
+  display: none;
+}
+.warning .accuracy {
+  display: none;
+}
+
+.text {
+  margin: 0 20px;
+}
+
+.arrow {
+  visibility: hidden;
+  font-size: 150px;
+  margin: 50px auto;
+  width: 150px;
+  height: 150px;
+  text-align: center;
+  line-height: 150px;
+  -webkit-transform-origin: 50% 50%;
+  -webkit-transform: rotate(0deg);
+  transform-origin: 50% 50%;
+  transform: rotate(0deg);
+}
+
+.distance {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.accuracy {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16px;
+  color: #999;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid #ddd;
+  background-color: #fff;
+}
+.footer .next {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  background-color: #fff;
+  margin: 10px;
+  font-size: 24px;
+  padding: 0;
+}

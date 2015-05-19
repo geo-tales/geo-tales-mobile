@@ -1,0 +1,42 @@
+{
+  "name": "geo-tales-mobile",
+  "version": "0.0.0",
+  "description": "The Geo Tales mobile website",
+  "main": "lib/geo-tales.js",
+  "browserify": {
+    "transform": [
+      "brfs"
+    ]
+  },
+  "scripts": {
+    "lint": "jslint --edition=latest --color \"lib/*.js\" \"test/*.js\"",
+    "pretest": "npm run lint",
+    "test": "mochify",
+    "watch:test": "mochify -w",
+    "watch:bundle": "watchify --debug . -o public/bundle.js",
+    "build:js": "browserify . -o public/bundle.js",
+    "build:css": "cat node_modules/normalize.css/normalize.css node_modules/animate.css/animate.css css/styles.css > public/styles.css",
+    "build": "npm run build:js && npm run build:css"
+  },
+  "author": "Maximilian Antoni <mail@maxantoni.de> (http://maxantoni.de)",
+  "license": "MIT",
+  "devDependencies": {
+    "animate.css": "^3.2.5",
+    "brfs": "^1.4.0",
+    "browserify": "^10.2.0",
+    "geolib": "^2.0.14",
+    "hyperglue": "^2.0.1",
+    "inherits": "^2.0.1",
+    "jslint": "^0.8.0",
+    "marked": "^0.3.3",
+    "mochify": "^2.8.1",
+    "normalize.css": "^3.0.3",
+    "sinon": "^1.14.1",
+    "watchify": "^3.2.1"
+  },
+  "repository": {
+    "type": "git",
+      "url": "https://github.com/geo-tales/geo-tales-mobile.git"
+    }
+  }
+}
