@@ -102,3 +102,57 @@ describe('localtion-model Polygon', function () {
   });
 
 });
+
+
+describe('localtion-model fromJson', function () {
+
+  it('creates circle', function () {
+    var center = {
+      latitude: 47.001,
+      longitutde: 9.1
+    };
+
+    var circle = model.fromJson({
+      type: 'circle',
+      center: center,
+      radius: 3
+    });
+
+    assert(circle instanceof model.Circle);
+    assert.deepEqual(circle.center, center);
+    assert.equal(circle.radius, 3);
+  });
+
+  it('creates polygon', function () {
+    var coords = [{
+      latitude: 47.0,
+      longitude: 9.1
+    }, {
+      latitude: 47.0002,
+      longitude: 9.1
+    }, {
+      latitude: 47.00022,
+      longitude: 9.1005
+    }, {
+      latitude: 47.0001,
+      longitude: 9.1
+    }];
+
+    var circle = model.fromJson({
+      type: 'polygon',
+      coords: coords
+    });
+
+    assert(circle instanceof model.Polygon);
+    assert.deepEqual(circle.coords, coords);
+  });
+
+  it('throws if type is unknown', function () {
+    assert.throws(function () {
+      model.fromJson({
+        type: 'unknown'
+      });
+    }, /Error: Unkown type: unknown/);
+  });
+
+});
