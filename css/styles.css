@@ -22,7 +22,7 @@ body {
 .warning .message {
   display: block;
   position: fixed;
-  top: 160px;
+  top: 120px;
   left: 50%;
   margin-left: -110px;
   width: 220px;
@@ -54,7 +54,7 @@ form li {
 .arrow {
   visibility: hidden;
   font-size: 150px;
-  margin: 50px auto;
+  margin: 25px auto;
   width: 150px;
   height: 150px;
   text-align: center;
