@@ -218,7 +218,7 @@ describe('screen-navigate', function () {
         'rgb(0, 182, 255)');
   });
 
-  it('sets transparent background on bad accuracy', function () {
+  it('resets background on bad accuracy', function () {
     document.documentElement.style.backgroundColor = '#ff0000';
     render({ colorSteps : 10 });
 
@@ -228,8 +228,19 @@ describe('screen-navigate', function () {
       accuracy: 30
     });
 
-    assert.equal(document.documentElement.style.backgroundColor,
-        'transparent');
+    assert.equal(document.documentElement.style.backgroundColor, 'inherit');
+  });
+
+  it('resets background color once inside shape', function () {
+    document.documentElement.style.backgroundColor = '#ff0000';
+    render();
+
+    loc.updatePosition({
+      longitude: 47.05,
+      latitude: 9.1
+    });
+
+    assert.equal(document.documentElement.style.backgroundColor, 'inherit');
   });
 
 });
