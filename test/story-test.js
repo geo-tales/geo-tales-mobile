@@ -481,6 +481,38 @@ describe('story', function () {
       '<h2 id="goodbye" class="animated">Goodbye</h2>\n');
   }));
 
+  it('passes options to navigate screen', sinon.test(function () {
+    this.spy(navigateScreen, 'create');
+    var story = makeStory.fromJson({
+      locations: {
+        loc: dummyCircle
+      },
+      screens: {
+        start: {
+          type: 'navigate',
+          location: 'loc',
+          options: {
+            colorSteps: 3,
+            distance: false,
+            compass: false
+          },
+          next: 'end'
+        },
+        end: {
+          type: 'finish'
+        }
+      }
+    });
+    story(div);
+
+    sinon.assert.calledOnce(navigateScreen.create);
+    sinon.assert.calledWith(navigateScreen.create, div, sinon.match.any, {
+      colorSteps: 3,
+      distance: false,
+      compass: false
+    });
+  }));
+
   it('passes points to finish screen', sinon.test(function () {
     this.stub(finishScreen, 'create');
 
