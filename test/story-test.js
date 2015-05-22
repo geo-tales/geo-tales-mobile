@@ -3,10 +3,12 @@
 
 var assert = require('assert');
 var sinon = require('sinon');
-var model = require('../lib/location-model');
+var locationModel = require('../lib/location-model');
+var locationTracker = require('../lib/location-tracker');
 var textScreen = require('../lib/screen-text');
 var choicesScreen = require('../lib/screen-multiple-choice');
 var navigateScreen = require('../lib/screen-navigate');
+var finishScreen = require('../lib/screen-finish');
 var makeStory = require('../lib/story');
 
 
@@ -44,28 +46,31 @@ describe('story', function () {
   });
 
   it('creates locations', sinon.test(function () {
-    this.spy(model, 'fromJson');
+    this.spy(locationModel, 'fromJson');
 
     makeStory.fromJson({
       locations: {
         foo: dummyCircle,
         bar: dummyPolygon
+      },
+      screens: {
+        start: {
+          type: 'finish'
+        }
       }
     });
 
-    sinon.assert.calledTwice(model.fromJson);
-    sinon.assert.calledWith(model.fromJson, dummyCircle);
-    sinon.assert.calledWith(model.fromJson, dummyPolygon);
+    sinon.assert.calledTwice(locationModel.fromJson);
+    sinon.assert.calledWith(locationModel.fromJson, dummyCircle);
+    sinon.assert.calledWith(locationModel.fromJson, dummyPolygon);
   }));
 
   it('throws if start screen does not exist', function () {
-    var story = makeStory.fromJson({
-      locations: {},
-      screens: {}
-    });
-
     assert.throws(function () {
-      story(div);
+      makeStory.fromJson({
+        locations: {},
+        screens: {}
+      });
     }, /Error: Missing "start" screen/);
   });
 
@@ -77,7 +82,11 @@ describe('story', function () {
       screens: {
         start: {
           type: 'text',
-          text: '## Oh, hi!'
+          text: '## Oh, hi!',
+          next: 'end'
+        },
+        end: {
+          type: 'finish'
         }
       }
     });
@@ -88,33 +97,58 @@ describe('story', function () {
   }));
 
   it('throws if start screen has no type', function () {
-    var story = makeStory.fromJson({
-      locations: {},
-      screens: {
-        start: {
-          text: '## Oh, hi!'
-        }
-      }
-    });
-
     assert.throws(function () {
-      story(div);
+      makeStory.fromJson({
+        locations: {},
+        screens: {
+          start: {
+            text: '## Oh, hi!'
+          }
+        }
+      });
     }, /Error: Screen "start" has no type/);
   });
 
   it('throws if text screen has no text', function () {
-    var story = makeStory.fromJson({
-      locations: {},
-      screens: {
-        start: {
-          type: 'text'
-        }
-      }
-    });
-
     assert.throws(function () {
-      story(div);
+      makeStory.fromJson({
+        locations: {},
+        screens: {
+          start: {
+            type: 'text'
+          }
+        }
+      });
     }, /Error: Screen "start" has no text/);
+  });
+
+  it('throws if text screen has no next', function () {
+    assert.throws(function () {
+      makeStory.fromJson({
+        locations: {},
+        screens: {
+          start: {
+            type: 'text',
+            text: '## Hi'
+          }
+        }
+      });
+    }, /Error: Screen "start" has no next/);
+  });
+
+  it('throws if text screen next does not exist', function () {
+    assert.throws(function () {
+      makeStory.fromJson({
+        locations: {},
+        screens: {
+          start: {
+            type: 'text',
+            text: '## Hi',
+            next: 'missing'
+          }
+        }
+      });
+    }, /Error: Screen "start" has unknown next "missing"/);
   });
 
   it('creates start multiple choice screen', sinon.test(function () {
@@ -126,7 +160,13 @@ describe('story', function () {
         start: {
           type: 'choices',
           text: '## Oh, hi!',
-          choices: [{ text : 'A' }]
+          choices: [{
+            text : 'A',
+            next: 'end'
+          }]
+        },
+        end: {
+          type: 'finish'
         }
       }
     });
@@ -134,53 +174,114 @@ describe('story', function () {
 
     sinon.assert.calledOnce(choicesScreen.create);
     sinon.assert.calledWith(choicesScreen.create, div, '## Oh, hi!', [{
-      text : 'A'
+      text: 'A',
+      next: 'end'
     }]);
   }));
 
   it('throws if choices screen has no text', function () {
-    var story = makeStory.fromJson({
-      locations: {},
-      screens: {
-        start: {
-          type: 'choices'
-        }
-      }
-    });
-
     assert.throws(function () {
-      story(div);
+      makeStory.fromJson({
+        locations: {},
+        screens: {
+          start: {
+            type: 'choices'
+          }
+        }
+      });
     }, /Error: Screen "start" has no text/);
   });
 
   it('throws if choices screen has no choices', function () {
-    var story = makeStory.fromJson({
-      locations: {},
-      screens: {
-        start: {
-          type: 'choices',
-          text: '## Oh, hi!'
-        }
-      }
-    });
-
     assert.throws(function () {
-      story(div);
+      makeStory.fromJson({
+        locations: {},
+        screens: {
+          start: {
+            type: 'choices',
+            text: '## Oh, hi!'
+          }
+        }
+      });
     }, /Error: Screen "start" has no choices/);
   });
 
-  it('throws if screen type is unknown', function () {
-    var story = makeStory.fromJson({
-      locations: {},
-      screens: {
-        start: {
-          type: 'unknown'
-        }
-      }
-    });
-
+  it('throws if choice has no text', function () {
     assert.throws(function () {
-      story(div);
+      makeStory.fromJson({
+        locations: {},
+        screens: {
+          start: {
+            type: 'choices',
+            text: 'Pick one',
+            choices: [{}]
+          }
+        }
+      });
+    }, /Error: Screen "start" has choice without text/);
+  });
+
+  it('throws if choice has no next', function () {
+    assert.throws(function () {
+      makeStory.fromJson({
+        locations: {},
+        screens: {
+          start: {
+            type: 'choices',
+            text: 'Pick one',
+            choices: [{
+              text: 'One'
+            }]
+          }
+        }
+      });
+    }, /Error: Screen "start" has choice without next/);
+  });
+
+  it('throws if choices next does not exists', function () {
+    assert.throws(function () {
+      makeStory.fromJson({
+        locations: {},
+        screens: {
+          start: {
+            type: 'choices',
+            text: 'Pick one',
+            choices: [],
+            next: 'missing'
+          }
+        }
+      });
+    }, /Error: Screen "start" has unknown next "missing"/);
+  });
+
+  it('throws if choice next does not exists', function () {
+    assert.throws(function () {
+      makeStory.fromJson({
+        locations: {},
+        screens: {
+          start: {
+            type: 'choices',
+            text: 'Pick one',
+            choices: [{
+              text: 'One',
+              next: 'missing'
+            }]
+          }
+        }
+      });
+    }, /Error: Screen "start" has choice with unknown next "missing"/);
+  });
+
+  it('throws if screen type is unknown', function () {
+    assert.throws(function () {
+      makeStory.fromJson({
+        locations: {},
+        screens: {
+          start: {
+            type: 'unknown'
+          }
+        }
+      });
     }, /Error: Screen "start" has unknown type "unknown"/);
   });
 
@@ -194,7 +295,7 @@ describe('story', function () {
           next: 'end'
         },
         end: {
-          type: 'text',
+          type: 'finish',
           text: '## Goodbye'
         }
       }
@@ -204,7 +305,7 @@ describe('story', function () {
     div.querySelector('.next').click();
 
     assert.equal(div.querySelector('.text').innerHTML,
-      '<h2 id="goodbye">Goodbye</h2>\n');
+      '<h2 id="goodbye" class="animated">Goodbye</h2>\n');
   });
 
   it('shows next screen depending on choice', function () {
@@ -222,7 +323,11 @@ describe('story', function () {
         },
         end: {
           type: 'text',
-          text: '## Goodbye'
+          text: '## Goodbye',
+          next: 'bla'
+        },
+        bla: {
+          type: 'finish'
         }
       }
     });
@@ -249,7 +354,7 @@ describe('story', function () {
           next: 'end'
         },
         end: {
-          type: 'text',
+          type: 'finish',
           text: '## Goodbye'
         }
       }
@@ -260,7 +365,7 @@ describe('story', function () {
     div.querySelector('.next').click();
 
     assert.equal(div.querySelector('.text').innerHTML,
-      '<h2 id="goodbye">Goodbye</h2>\n');
+      '<h2 id="goodbye" class="animated">Goodbye</h2>\n');
   });
 
   it('creates start navigate screen', sinon.test(function () {
@@ -273,7 +378,11 @@ describe('story', function () {
       screens: {
         start: {
           type: 'navigate',
-          location: 'foo'
+          location: 'foo',
+          next: 'end'
+        },
+        end: {
+          type: 'finish'
         }
       }
     });
@@ -281,38 +390,139 @@ describe('story', function () {
 
     sinon.assert.calledOnce(navigateScreen.create);
     sinon.assert.calledWith(navigateScreen.create, div,
-        sinon.match.instanceOf(model.Circle), {});
+        sinon.match.instanceOf(locationModel.Circle), {});
   }));
 
   it('throws if navigate screen has no location', function () {
-    var story = makeStory.fromJson({
-      locations: {},
-      screens: {
-        start: {
-          type: 'navigate'
-        }
-      }
-    });
-
     assert.throws(function () {
-      story(div);
+      makeStory.fromJson({
+        locations: {},
+        screens: {
+          start: {
+            type: 'navigate'
+          }
+        }
+      });
     }, /Error: Screen "start" has no location/);
   });
 
   it('throws if navigate screen is unknown', function () {
+    assert.throws(function () {
+      makeStory.fromJson({
+        locations: {},
+        screens: {
+          start: {
+            type: 'navigate',
+            location: 'unknown'
+          }
+        }
+      });
+    }, /Error: Screen "start" has unknown location "unknown"/);
+  });
+
+  it('throws if navigate screen has no next', function () {
+    assert.throws(function () {
+      makeStory.fromJson({
+        locations: {
+          loc: dummyCircle
+        },
+        screens: {
+          start: {
+            type: 'navigate',
+            location: 'loc'
+          }
+        }
+      });
+    }, /Error: Screen "start" has no next/);
+  });
+
+  it('throws if navigate screen next does not exist', function () {
+    assert.throws(function () {
+      makeStory.fromJson({
+        locations: {
+          loc: dummyCircle
+        },
+        screens: {
+          start: {
+            type: 'text',
+            text: '## Hi',
+            location: 'loc',
+            next: 'missing'
+          }
+        }
+      });
+    }, /Error: Screen "start" has unknown next "missing"/);
+  });
+
+  it('shows next screen when location is reached', sinon.test(function () {
+    this.spy(locationTracker, 'create');
+    var story = makeStory.fromJson({
+      locations: {
+        loc: dummyCircle
+      },
+      screens: {
+        start: {
+          type: 'navigate',
+          location: 'loc',
+          next: 'end'
+        },
+        end: {
+          type: 'finish',
+          text: '## Goodbye'
+        }
+      }
+    });
+    story(div);
+
+    locationTracker.create.firstCall.returnValue.emit('position',
+        dummyCircle.center);
+
+    assert.equal(div.querySelector('.text').innerHTML,
+      '<h2 id="goodbye" class="animated">Goodbye</h2>\n');
+  }));
+
+  it('creates finish screen', sinon.test(function () {
+    this.stub(finishScreen, 'create');
+
     var story = makeStory.fromJson({
       locations: {},
       screens: {
         start: {
-          type: 'navigate',
-          location: 'unknown'
+          type: 'text',
+          text: '## Oh, hi!',
+          next: 'finish'
+        },
+        finish: {
+          type: 'finish'
         }
       }
     });
+    story(div);
+    div.querySelector('.next').click();
 
+    sinon.assert.calledOnce(finishScreen.create);
+    sinon.assert.calledWith(finishScreen.create, div, undefined, {
+      time: sinon.match.number
+    });
+  }));
+
+  it('throws if no finish screen exists', function () {
     assert.throws(function () {
-      story(div);
-    }, /Error: Screen "start" has unknown location "unknown"/);
+      makeStory.fromJson({
+        locations: {},
+        screens: {
+          start: {
+            type: 'text',
+            text: '## One',
+            next: 'two'
+          },
+          two: {
+            type: 'text',
+            text: '## Two',
+            next: 'start'
+          }
+        }
+      });
+    }, /Error: Missing "finish" screen/);
   });
-
 });
