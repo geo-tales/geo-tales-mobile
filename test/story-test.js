@@ -481,6 +481,48 @@ describe('story', function () {
       '<h2 id="goodbye" class="animated">Goodbye</h2>\n');
   }));
 
+  it('passes points to finish screen', sinon.test(function () {
+    this.stub(finishScreen, 'create');
+
+    var story = makeStory.fromJson({
+      locations: {},
+      screens: {
+        start: {
+          type: 'choices',
+          text: '## Oh, hi!',
+          choices: [{
+            text: 'Points!',
+            points: 5,
+            next: 'two'
+          }]
+        },
+        two: {
+          type: 'choices',
+          text: '## Oh, hi!',
+          choices: [{
+            text: 'More points!',
+            points: 2,
+            next: 'finish'
+          }]
+        },
+        finish: {
+          type: 'finish'
+        }
+      }
+    });
+    story(div);
+    div.querySelector('input[name=choice]').click();
+    div.querySelector('.next').click();
+    div.querySelector('input[name=choice]').click();
+    div.querySelector('.next').click();
+
+    sinon.assert.calledOnce(finishScreen.create);
+    sinon.assert.calledWith(finishScreen.create, div, undefined, {
+      time: sinon.match.number,
+      points: 7
+    });
+  }));
+
   it('creates finish screen', sinon.test(function () {
     this.stub(finishScreen, 'create');
 
@@ -525,4 +567,5 @@ describe('story', function () {
       });
     }, /Error: Missing "finish" screen/);
   });
+
 });
