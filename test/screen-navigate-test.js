@@ -87,21 +87,16 @@ describe('screen-navigate', function () {
         'rotate(60deg)');
   });
 
-  it('shows warning if not accurate enough', function () {
-    document.documentElement.style.backgroundColor = '#ff0000';
+  it('shows bad accuracy if not accurate enough', function () {
     render();
 
     loc.updatePosition({
       longitude: 47.051,
       latitude: 9.1,
-      accuracy: 21
+      accuracy: 20
     });
 
-    assert(div.querySelector('.screen').classList.contains('warning'));
-    assert(div.querySelector('.message').classList.contains('animated'));
-    assert.equal(div.querySelector('.arrow').style.visibility, 'hidden');
-    assert.equal(document.documentElement.style.backgroundColor,
-        'transparent');
+    assert(div.querySelector('.accuracy').classList.contains('bad'));
   });
 
   it('hides warning if accuracy gets better', function () {
@@ -110,20 +105,19 @@ describe('screen-navigate', function () {
     loc.updatePosition({
       longitude: 47.051,
       latitude: 9.1,
-      accuracy: 21
+      accuracy: 20
     });
     loc.updatePosition({
       longitude: 47.051,
       latitude: 9.1,
-      accuracy: 20
+      accuracy: 19
     });
     loc.updateOrientation({
       alpha: 120
     });
 
-    assert.equal(div.querySelector('.screen').classList.contains('warning'),
+    assert.equal(div.querySelector('.accuracy').classList.contains('bad'),
         false);
-    assert.equal(div.querySelector('.arrow').style.visibility, 'visible');
   });
 
   it('emits complete once inside shape', function () {
@@ -162,8 +156,18 @@ describe('screen-navigate', function () {
   it('does not render distance and accuracy', function () {
     render({ distance : false });
 
-    assert.equal(div.querySelector('.distance').style.display, 'none');
-    assert.equal(div.querySelector('.accuracy').style.display, 'none');
+    loc.updatePosition({
+      longitude: 47.051,
+      latitude: 9.1,
+      accuracy: 5
+    });
+
+    assert.equal(div.querySelector('.distance').innerHTML, '');
+    assert.equal(div.querySelector('.accuracy').innerHTML, '');
+  });
+
+  it('renders accuracy anyway if bad', function () {
+    render({ distance : false });
 
     loc.updatePosition({
       longitude: 47.051,
@@ -172,7 +176,28 @@ describe('screen-navigate', function () {
     });
 
     assert.equal(div.querySelector('.distance').innerHTML, '');
+    assert.equal(div.querySelector('.accuracy').innerHTML, 'Accuracy: 25 m');
+    assert(div.querySelector('.accuracy').classList.contains('bad'));
+  });
+
+  it('removes accuracy again if it gets better', function () {
+    render({ distance : false });
+
+    loc.updatePosition({
+      longitude: 47.051,
+      latitude: 9.1,
+      accuracy: 25
+    });
+    loc.updatePosition({
+      longitude: 47.051,
+      latitude: 9.1,
+      accuracy: 5
+    });
+
+    assert.equal(div.querySelector('.distance').innerHTML, '');
     assert.equal(div.querySelector('.accuracy').innerHTML, '');
+    assert.equal(div.querySelector('.accuracy').classList.contains('bad'),
+      false);
   });
 
   it('sets background color', function () {
@@ -180,15 +205,31 @@ describe('screen-navigate', function () {
 
     loc.updatePosition({
       longitude: 47.051,
-      latitude: 9.1
+      latitude: 9.1,
+      accuracy: 5
     });
     loc.updatePosition({
       longitude: 47.0511,
-      latitude: 9.1
+      latitude: 9.1,
+      accuracy: 5
     });
 
     assert.equal(document.documentElement.style.backgroundColor,
         'rgb(0, 182, 255)');
+  });
+
+  it('sets transparent background on bad accuracy', function () {
+    document.documentElement.style.backgroundColor = '#ff0000';
+    render({ colorSteps : 10 });
+
+    loc.updatePosition({
+      longitude: 47.051,
+      latitude: 9.1,
+      accuracy: 30
+    });
+
+    assert.equal(document.documentElement.style.backgroundColor,
+        'transparent');
   });
 
 });

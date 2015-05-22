@@ -44,7 +44,7 @@ body {
 }
 
 form ul {
-  margin: 30px 0;;
+  margin: 30px 0;
   list-style-type: none;
 }
 form li {
@@ -76,6 +76,10 @@ form li {
   text-align: center;
   font-size: 16px;
   color: #999;
+}
+.accuracy.bad {
+  color: #f00;
+  font-weight: bold;
 }
 
 .footer {
