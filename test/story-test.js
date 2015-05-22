@@ -305,7 +305,7 @@ describe('story', function () {
     div.querySelector('.next').click();
 
     assert.equal(div.querySelector('.text').innerHTML,
-      '<h2 id="goodbye" class="animated">Goodbye</h2>\n');
+      '<h2 id="goodbye">Goodbye</h2>\n');
   });
 
   it('shows next screen depending on choice', function () {
@@ -365,7 +365,7 @@ describe('story', function () {
     div.querySelector('.next').click();
 
     assert.equal(div.querySelector('.text').innerHTML,
-      '<h2 id="goodbye" class="animated">Goodbye</h2>\n');
+      '<h2 id="goodbye">Goodbye</h2>\n');
   });
 
   it('creates start navigate screen', sinon.test(function () {
@@ -478,7 +478,7 @@ describe('story', function () {
         dummyCircle.center);
 
     assert.equal(div.querySelector('.text').innerHTML,
-      '<h2 id="goodbye" class="animated">Goodbye</h2>\n');
+      '<h2 id="goodbye">Goodbye</h2>\n');
   }));
 
   it('passes options to navigate screen', sinon.test(function () {

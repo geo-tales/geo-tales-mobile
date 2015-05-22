@@ -19,14 +19,14 @@ describe('screen-finish', function () {
     screen.create(div, '## Heading\n\nSome text', {});
 
     assert.equal(div.querySelector('.text').innerHTML,
-      '<h2 id="heading" class="animated">Heading</h2>\n<p>Some text</p>\n');
+      '<h2 id="heading">Heading</h2>\n<p>Some text</p>\n');
   });
 
   it('defaults text', function () {
     screen.create(div, null, {});
 
     assert.equal(div.querySelector('.text').innerHTML,
-      '<h2 id="congratulations-" class="animated">Congratulations!</h2>\n'
+      '<h2 id="congratulations-">Congratulations!</h2>\n'
       + '<p>You reached the end of this story.</p>\n');
   });
 
