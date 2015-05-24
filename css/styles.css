@@ -26,9 +26,6 @@ body {
 
 .message {
   display: none;
-}
-.warning .message {
-  display: block;
   position: fixed;
   top: 120px;
   left: 50%;
@@ -36,15 +33,16 @@ body {
   width: 220px;
   font-size: 32px;
   text-align: center;
-  color: #f30;
-  border: 2px solid #f30;
+  border: 2px solid #000;
   border-radius: 10px;
 }
-.warning .distance {
-  display: none;
+.message.info {
+  display: block;
 }
-.warning .accuracy {
-  display: none;
+.message.warning {
+  display: block;
+  color: #f30;
+  border-color: #f30;
 }
 
 .text {
