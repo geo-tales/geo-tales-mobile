@@ -1,0 +1,59 @@
+{
+  "locations": {
+    "A": {
+      "type": "circle",
+      "center": {
+        "latitude": 47.400217,
+        "longitude": 8.440767
+      },
+      "radius": 5
+    }
+  },
+  "screens": {
+    "start": {
+      "type": "choices",
+      "text": "## Pick a screen type",
+      "choices": [{
+        "text": "Navigation",
+        "next": "1"
+      }, {
+        "text": "Text",
+        "next": "2"
+      }, {
+        "text": "Multiple Choice",
+        "next": "3"
+      }, {
+        "text": "Finish",
+        "next": "finish"
+      }]
+    },
+    "1": {
+      "type": "navigate",
+      "location": "A",
+      "next": "start"
+    },
+    "2": {
+      "type": "text",
+      "text": "## Simple Text Screen\n\nTell a part of the story or describe the current location.\n\nFree text, written in [markdown](https://help.github.com/articles/markdown-basics/).",
+      "next": "start"
+    },
+    "3": {
+      "type": "choices",
+      "text": "## Multiple choice\n\nNavigation to the next screen is blocked until the user selects an option. Different options can cause navigation to happen to different next screens or increase the players score points.",
+      "choices": [{
+        "text": "Options can use the __markdown__ format any other text"
+      }, {
+        "text": "Options can have a 'points' property by which the players score is increased"
+      }, {
+        "text": "Options can have a 'next' property pointing to the next screen"
+      }, {
+        "text": "It's also possible to have a default 'next' property on the choices definition. Specifying 'next' on an option takes precedence over the default."
+      }],
+      "next": "start"
+    },
+    "finish": {
+      "type": "finish",
+      "next": "start"
+    }
+  }
+}
