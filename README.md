@@ -14,10 +14,13 @@ Building the website:
 
     $ npm run build
 
-You need a web server to test the application. If you don't have one at hand,
-install `http-server` and let it ship the `public` directory:
+Running the website locally:
 
-    $ npm install http-server -g
-    $ http-server public
+    $ npm start
 
 Then open <http://localhost:8080> in your browser.
+
+## Building stories
+
+To load a story locally, put a `my-story.json` file in the `public` directory.
+Then open <http://localhost:8080?story=my-story.json>
