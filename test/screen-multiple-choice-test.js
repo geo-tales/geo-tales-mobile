@@ -43,7 +43,9 @@ describe('screen-text', function () {
       points: 1
     }], spy);
 
-    div.querySelectorAll('input[name=choice]')[0].click();
+    var choice = div.querySelector('input[name=choice]');
+    choice.setAttribute('checked', 'checked');
+    choice.onchange();
     div.querySelector('.next').click();
 
     sinon.assert.calledOnce(spy);

@@ -1,6 +1,8 @@
 /*global describe, it, beforeEach, afterEach, document*/
 'use strict';
 
+require('../lib/animate').disable();
+
 var assert = require('assert');
 var sinon = require('sinon');
 var locationModel = require('../lib/location-model');
@@ -333,7 +335,9 @@ describe('story', function () {
     });
     story(div);
 
-    div.querySelector('input[name=choice]').click();
+    var choice = div.querySelector('input[name=choice]');
+    choice.setAttribute('checked', 'checked');
+    choice.onchange();
     div.querySelector('.next').click();
 
     assert.equal(div.querySelector('.text').innerHTML,
@@ -361,7 +365,9 @@ describe('story', function () {
     });
     story(div);
 
-    div.querySelector('input[name=choice]').click();
+    var choice = div.querySelector('input[name=choice]');
+    choice.setAttribute('checked', 'checked');
+    choice.onchange();
     div.querySelector('.next').click();
 
     assert.equal(div.querySelector('.text').innerHTML,
@@ -543,9 +549,13 @@ describe('story', function () {
       }
     });
     story(div);
-    div.querySelector('input[name=choice]').click();
+    var choice = div.querySelector('input[name=choice]');
+    choice.setAttribute('checked', 'checked');
+    choice.onchange();
     div.querySelector('.next').click();
-    div.querySelector('input[name=choice]').click();
+    choice = div.querySelector('input[name=choice]');
+    choice.setAttribute('checked', 'checked');
+    choice.onchange();
     div.querySelector('.next').click();
 
     sinon.assert.calledOnce(finishScreen.create);
