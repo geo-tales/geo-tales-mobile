@@ -14,8 +14,11 @@
       "type": "choices",
       "text": "## Pick a screen type",
       "choices": [{
-        "text": "Navigation",
-        "next": "1"
+        "text": "Navigation with arrow and distance",
+        "next": "nav-defaults"
+      }, {
+        "text": "Navigation with color",
+        "next": "nav-color"
       }, {
         "text": "Text",
         "next": "2"
@@ -27,9 +30,23 @@
         "next": "finish"
       }]
     },
-    "1": {
+    "nav-defaults": {
       "type": "navigate",
       "location": "A",
+      "options": {
+        "demo": true
+      },
+      "next": "start"
+    },
+    "nav-color": {
+      "type": "navigate",
+      "location": "A",
+      "options": {
+        "demo": true,
+        "colorSteps": 3,
+        "compass": false,
+        "distance": false
+      },
       "next": "start"
     },
     "2": {

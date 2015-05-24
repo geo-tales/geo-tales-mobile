@@ -120,13 +120,26 @@ describe('screen-navigate', function () {
         false);
   });
 
-  it('emits complete once inside shape', function () {
+  it('shows info message and footer once insde shape', function () {
+    render();
+    assert.equal(div.querySelector('.footer').style.display, 'none');
+
+    loc.updatePosition({
+      longitude: 47.05,
+      latitude: 9.1
+    });
+
+    assert.equal(div.querySelector('.footer').style.display, 'block');
+  });
+
+  it('invokes next once inside shape and user clicks next', function () {
     render();
 
     loc.updatePosition({
       longitude: 47.05,
       latitude: 9.1
     });
+    div.querySelector('.footer .next').click();
 
     sinon.assert.calledOnce(next);
   });
@@ -239,6 +252,7 @@ describe('screen-navigate', function () {
       longitude: 47.05,
       latitude: 9.1
     });
+    div.querySelector('.footer .next').click();
 
     assert.equal(document.documentElement.style.backgroundColor, 'inherit');
   });

@@ -482,6 +482,7 @@ describe('story', function () {
 
     locationTracker.create.firstCall.returnValue.emit('position',
         dummyCircle.center);
+    div.querySelector('.footer .next').click();
 
     assert.equal(div.querySelector('.text').innerHTML,
       '<h2 id="goodbye">Goodbye</h2>\n');
