@@ -1,4 +1,5 @@
 {
+  "demo": true,
   "locations": {
     "A": {
       "type": "circle",
@@ -33,16 +34,12 @@
     "nav-defaults": {
       "type": "navigate",
       "location": "A",
-      "options": {
-        "demo": true
-      },
       "next": "start"
     },
     "nav-color": {
       "type": "navigate",
       "location": "A",
       "options": {
-        "demo": true,
         "colorSteps": 3,
         "compass": false,
         "distance": false
