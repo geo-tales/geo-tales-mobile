@@ -6,14 +6,22 @@ body {
   position: fixed;
   top: 0;
   width: 100%;
-  height: 80px;
+  height: 50px;
   border-bottom: 1px solid #ddd;
-  background-color: #fff;
   z-index: 1;
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f4f4f4)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%,#f4f4f4 100%); /* Chrome10+,Safari5.1+ */
+  background: -ms-linear-gradient(top, #ffffff 0%,#f4f4f4 100%); /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 0%,#f4f4f4 100%); /* W3C */
 }
 
 #header h1 {
   text-align: center;
+  font-size: 32px;
+  margin: 8px;
+  color: #666;
 }
 
 .message {
@@ -26,7 +34,7 @@ body {
   left: 50%;
   margin-left: -110px;
   width: 220px;
-  font-size: 40px;
+  font-size: 32px;
   text-align: center;
   color: #f30;
   border: 2px solid #f30;
@@ -48,7 +56,8 @@ form ul {
   list-style-type: none;
 }
 form li {
-  margin-bottom: 0.7em;
+  margin-bottom: 1.5em;
+  margin-right: 1em;
 }
 
 .arrow {
@@ -88,7 +97,12 @@ form li {
   width: 100%;
   text-align: center;
   border-top: 1px solid #ddd;
-  background-color: #fff;
+  background: #efefef; /* Old browsers */
+  background: -moz-linear-gradient(top, #efefef 0%, #ffffff 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#efefef), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #efefef 0%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+  background: -ms-linear-gradient(top, #efefef 0%,#ffffff 100%); /* IE10+ */
+  background: linear-gradient(to bottom, #efefef 0%,#ffffff 100%); /* W3C */
 }
 .footer .next {
   width: 50px;
