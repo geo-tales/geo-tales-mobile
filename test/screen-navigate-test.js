@@ -15,6 +15,7 @@ describe('screen-navigate', function () {
   var div;
   var circle;
   var screen;
+  var clock;
   var next;
 
   beforeEach(function () {
@@ -24,6 +25,7 @@ describe('screen-navigate', function () {
       longitude: 47.05,
       latitude: 9.1
     }, 20);
+    clock = sinon.useFakeTimers();
     next = sinon.spy();
   });
 
@@ -32,6 +34,7 @@ describe('screen-navigate', function () {
       screen.destroy();
     }
     loc.destroy();
+    clock.restore();
   });
 
   function render(opts) {
@@ -139,6 +142,7 @@ describe('screen-navigate', function () {
       longitude: 47.05,
       latitude: 9.1
     });
+    clock.tick(500);
     div.querySelector('.footer .next').click();
 
     sinon.assert.calledOnce(next);
@@ -252,6 +256,7 @@ describe('screen-navigate', function () {
       longitude: 47.05,
       latitude: 9.1
     });
+    clock.tick(500);
     div.querySelector('.footer .next').click();
 
     assert.equal(document.documentElement.style.backgroundColor, 'inherit');
