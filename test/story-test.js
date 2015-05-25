@@ -619,8 +619,11 @@ describe('story', function () {
     });
     story(div);
 
-    locationTracker.create.firstCall.returnValue.emit('position',
-        dummyCircle.center);
+    locationTracker.create.firstCall.returnValue.emit('position', {
+      latitude: dummyCircle.center.latitude,
+      longitude: dummyCircle.center.longitude,
+      accuracy: 5
+    });
     this.clock.tick(500);
     div.querySelector('.footer .next').click();
 
@@ -809,15 +812,19 @@ describe('story', function () {
 
     locationTracker.create.firstCall.returnValue.emit('position', {
       latitude: dummyCircle.center.latitude + 0.0001,
-      longitude: dummyCircle.center.longitude
+      longitude: dummyCircle.center.longitude,
+      accuracy: 5
     });
     div.querySelector('.footer .next').click();
 
     assert.notEqual(div.querySelector('.compass'), null);
     assert.notEqual(div.querySelector('.distance'), null);
 
-    locationTracker.create.secondCall.returnValue.emit('position',
-      dummyCircle.center);
+    locationTracker.create.secondCall.returnValue.emit('position', {
+      latitude: dummyCircle.center.latitude,
+      longitude: dummyCircle.center.longitude,
+      accuracy: 5
+    });
     this.clock.tick(500);
     div.querySelector('.footer .next').click();
 

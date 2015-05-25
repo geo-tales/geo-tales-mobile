@@ -79,7 +79,8 @@ describe('screen-navigate', function () {
 
     loc.updatePosition({
       longitude: 47.051,
-      latitude: 9.1
+      latitude: 9.1,
+      accuracy: 10
     });
     loc.updateOrientation({
       alpha: 120
@@ -129,7 +130,8 @@ describe('screen-navigate', function () {
 
     loc.updatePosition({
       longitude: 47.05,
-      latitude: 9.1
+      latitude: 9.1,
+      accuracy: 10
     });
 
     assert.equal(div.querySelector('.footer').style.display, 'block');
@@ -140,7 +142,8 @@ describe('screen-navigate', function () {
 
     loc.updatePosition({
       longitude: 47.05,
-      latitude: 9.1
+      latitude: 9.1,
+      accuracy: 10
     });
     clock.tick(500);
     div.querySelector('.footer .next').click();
@@ -161,7 +164,8 @@ describe('screen-navigate', function () {
 
     loc.updatePosition({
       longitude: 47.051,
-      latitude: 9.1
+      latitude: 9.1,
+      accuracy: 10
     });
     loc.updateOrientation({
       alpha: 120
@@ -254,12 +258,37 @@ describe('screen-navigate', function () {
 
     loc.updatePosition({
       longitude: 47.05,
-      latitude: 9.1
+      latitude: 9.1,
+      accuracy: 10
     });
     clock.tick(500);
     div.querySelector('.footer .next').click();
 
     assert.equal(document.documentElement.style.backgroundColor, 'inherit');
+  });
+
+  it('shows footer if screen is opened within shape', function () {
+    render();
+
+    loc.updatePosition({
+      longitude: 47.05,
+      latitude: 9.1,
+      accuracy: 10
+    });
+
+    assert.equal(div.querySelector('.footer').style.display, 'block');
+  });
+
+  it('does not show footer if accuracy is bad', function () {
+    render();
+
+    loc.updatePosition({
+      longitude: 47.05,
+      latitude: 9.1,
+      accuracy: 20
+    });
+
+    assert.equal(div.querySelector('.footer').style.display, 'none');
   });
 
 });
