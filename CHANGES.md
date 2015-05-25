@@ -1,5 +1,10 @@
 # Changes
 
+## 0.0.3
+
+- Require good accuracy to detect whether navigation position is in shape
+- Assert that all locations and screens are used at least once
+
 ## 0.0.2
 
 - Implement start screen
