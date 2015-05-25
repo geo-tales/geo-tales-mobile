@@ -10,6 +10,7 @@ install:
 	npm install
 
 release:
+	rm -f public/*.{js,css}
 	npm run release
 	git tag -a -m "Release ${version}" v${version}
 	git push --follow-tags
