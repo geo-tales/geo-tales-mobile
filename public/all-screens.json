@@ -66,8 +66,7 @@
       "next": "start"
     },
     "finish": {
-      "type": "finish",
-      "next": "start"
+      "type": "finish"
     }
   }
 }
