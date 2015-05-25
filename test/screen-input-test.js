@@ -25,6 +25,24 @@ describe('screen-input', function () {
     assert.equal(div.querySelectorAll('input[name=answer]').length, 1);
   });
 
+  it('renders input field with type="text"', function () {
+    screen.create(div, '## Heading\n\nSome text', {
+      answer: '42'
+    }, function () { return; });
+
+    var input = div.querySelector('input[name=answer]');
+    assert.equal(input.type, 'text');
+  });
+
+  it('renders input field with type="number"', function () {
+    screen.create(div, '## Heading\n\nSome text', {
+      answer: 42
+    }, function () { return; });
+
+    var input = div.querySelector('input[name=answer]');
+    assert.equal(input.type, 'number');
+  });
+
   it('invokes callback on next click with correct answer', function () {
     var spy = sinon.spy();
     screen.create(div, 'Hello', { answer: 'world' }, spy);

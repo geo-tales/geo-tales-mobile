@@ -65,7 +65,7 @@
     "2": {
       "type": "input",
       "text": "## Input Screen\n\nAsk a question, and only the correct answer will let the player continue.\n\n_1 + 2?_",
-      "answer": "3",
+      "answer": 3,
       "next": "start"
     },
     "3": {
