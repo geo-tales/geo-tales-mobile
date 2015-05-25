@@ -9,7 +9,7 @@ install:
 	rm -rf node_modules
 	npm install
 
-release: default
+release:
 	npm run release
 	git tag -a -m "Release ${version}" v${version}
 	git push --follow-tags
