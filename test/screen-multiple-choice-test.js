@@ -8,7 +8,7 @@ var sinon = require('sinon');
 var screen = require('../lib/screen-multiple-choice');
 
 
-describe('screen-text', function () {
+describe('screen-multiple-choice', function () {
   var div;
 
   beforeEach(function () {

@@ -12,6 +12,7 @@ var choicesScreen = require('../lib/screen-multiple-choice');
 var navigateScreen = require('../lib/screen-navigate');
 var finishScreen = require('../lib/screen-finish');
 var startScreen = require('../lib/screen-start');
+var inputScreen = require('../lib/screen-input');
 var makeStory = require('../lib/story');
 
 
@@ -188,6 +189,71 @@ describe('story', function () {
         }
       });
     }, /Error: Screen "start" has unknown next "missing"/);
+  });
+
+  it('creates start input screen', sinon.test(function () {
+    this.stub(startScreen, 'create').yields();
+    this.stub(inputScreen, 'create');
+
+    var story = makeStory.fromJson({
+      locations: {
+        start: dummyCircle
+      },
+      screens: {
+        start: {
+          type: 'input',
+          text: '## Hello',
+          answer: 'world',
+          next: 'end'
+        },
+        end: {
+          type: 'finish'
+        }
+      }
+    });
+    story(div);
+
+    sinon.assert.calledOnce(inputScreen.create);
+    sinon.assert.calledWith(inputScreen.create, div, '## Hello', {
+      answer: 'world'
+    });
+  }));
+
+  it('throws if input screen has no text', function () {
+    assert.throws(function () {
+      makeStory.fromJson({
+        locations: {
+          start: dummyCircle
+        },
+        screens: {
+          start: {
+            type: 'input',
+            answer: 'world',
+            next: 'end'
+          },
+          end: {
+            type: 'finish'
+          }
+        }
+      });
+    }, /Error: Screen "start" has no text/);
+  });
+
+  it('throws if input screen has no next', function () {
+    assert.throws(function () {
+      makeStory.fromJson({
+        locations: {
+          start: dummyCircle
+        },
+        screens: {
+          start: {
+            type: 'input',
+            text: '## Hello',
+            answer: 'world'
+          }
+        }
+      });
+    }, /Error: Screen "start" has no next/);
   });
 
   it('creates start multiple choice screen', sinon.test(function () {

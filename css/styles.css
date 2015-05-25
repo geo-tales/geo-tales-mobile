@@ -58,6 +58,24 @@ form li {
   margin-bottom: 1.5em;
   margin-right: 1em;
 }
+form input[name=answer] {
+  display: block;
+  width: 160px;
+  margin: 5px auto;
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px;
+}
+form input[name=answer].correct {
+  background-color: #afa;
+  color: #090;
+  border-color: #090;
+}
+form input[name=answer].incorrect {
+  background-color: #faa;
+  color: #900;
+  border-color: #900;
+}
 
 .arrow {
   visibility: hidden;

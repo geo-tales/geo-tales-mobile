@@ -1,4 +1,5 @@
 {
+  "demo": true,
   "locations": {
     "start": {
       "type": "circle",
@@ -29,6 +30,9 @@
         "next": "nav-color"
       }, {
         "text": "Text",
+        "next": "1"
+      }, {
+        "text": "Input",
         "next": "2"
       }, {
         "text": "Multiple Choice",
@@ -53,9 +57,15 @@
       },
       "next": "start"
     },
-    "2": {
+    "1": {
       "type": "text",
       "text": "## Simple Text Screen\n\nTell a part of the story or describe the current location.\n\nFree text, written in [markdown](https://help.github.com/articles/markdown-basics/).",
+      "next": "start"
+    },
+    "2": {
+      "type": "input",
+      "text": "## Input Screen\n\nAsk a question, and only the correct answer will let the player continue.\n\n_1 + 2?_",
+      "answer": "3",
       "next": "start"
     },
     "3": {
