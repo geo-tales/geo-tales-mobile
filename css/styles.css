@@ -1,5 +1,6 @@
 body {
   padding: 80px 0 70px 0;
+  -webkit-user-select: none;
 }
 
 #header {
@@ -64,7 +65,7 @@ form input[name=answer] {
   margin: 5px auto;
   border: 1px solid #999;
   border-radius: 3px;
-  padding: 5px;
+  padding: 10px;
 }
 form input[name=answer].correct {
   background-color: #afa;
