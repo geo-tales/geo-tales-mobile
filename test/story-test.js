@@ -64,6 +64,11 @@ describe('story', function () {
       },
       screens: {
         start: {
+          type: 'navigate',
+          location: 'bar',
+          next: 'end'
+        },
+        end: {
           type: 'finish'
         }
       }
@@ -831,5 +836,51 @@ describe('story', function () {
     assert.equal(div.querySelector('.compass'), null);
     assert.equal(div.querySelector('.distance'), null);
   }));
+
+  it('throws if location is not used', function () {
+    assert.throws(function () {
+      makeStory.fromJson({
+        locations: {
+          start: dummyCircle,
+          foo: dummyCircle
+        },
+        screens: {
+          start: {
+            type: 'text',
+            text: '## Test',
+            next: 'end'
+          },
+          end: {
+            type: 'finish'
+          }
+        }
+      });
+    }, /Error: Location "foo" is not used/);
+  });
+
+  it('throws if screen is not used', function () {
+    assert.throws(function () {
+      makeStory.fromJson({
+        locations: {
+          start: dummyCircle
+        },
+        screens: {
+          start: {
+            type: 'text',
+            text: '## Test',
+            next: 'end'
+          },
+          foo: {
+            type: 'text',
+            text: '## Test',
+            next: 'end'
+          },
+          end: {
+            type: 'finish'
+          }
+        }
+      });
+    }, /Error: Screen "foo" is not used/);
+  });
 
 });
