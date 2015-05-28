@@ -132,14 +132,25 @@ form input[name=answer].incorrect {
   font-size: 24px;
   padding: 0;
 }
-.footer .close {
-  width: 100px;
+.footer .close, .footer .discard {
+  width: 120px;
   height: 50px;
   border: 1px solid #d00;
   border-radius: 25px;
   background-color: #fff;
   color: #d00;
-  margin: 10px;
+  margin: 10px 5px;
+  font-size: 24px;
+  padding: 0;
+}
+.footer .continue {
+  width: 120px;
+  height: 50px;
+  border: 1px solid #0d0;
+  border-radius: 25px;
+  background-color: #fff;
+  color: #0d0;
+  margin: 10px 5px;
   font-size: 24px;
   padding: 0;
 }
