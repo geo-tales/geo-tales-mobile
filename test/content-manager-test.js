@@ -65,8 +65,9 @@ describe('content-manager', function () {
     loadAjax(JSON.stringify({}));
 
     assert.equal(div.querySelector('h2').innerHTML, 'Failed to load story!');
-    assert.equal(div.querySelector('p').innerHTML,
-        '<code>Error: valar morghulis</code>');
+    var p = div.querySelectorAll('p');
+    assert.equal(p[0].innerHTML, 'some/story.json');
+    assert.equal(p[1].innerHTML, '<code>Error: valar morghulis</code>');
   });
 
   it('creates text screen with error message if request fails', function () {
@@ -92,8 +93,50 @@ describe('content-manager', function () {
     assert.equal(server.requests.length, 0);
   });
 
-  it('loads previous story and restores saved story state');
+  it('loads previous story and restores saved story state', function () {
+    localStorage.setItem('story', 'some/story.json');
+    content.load('other/story.json');
 
-  it('discard existing story state and loads new story');
+    restoreScreen.create.firstCall.args[1]();
+
+    assert.equal(server.requests.length, 1);
+    assert.equal(server.requests[0].url, 'some/story.json');
+    assert.equal(localStorage.getItem('story'), 'some/story.json');
+  });
+
+  it('discard existing story state and loads new story', function () {
+    localStorage.setItem('story', 'some/story.json');
+    localStorage.setItem('screen', 'foo');
+    localStorage.setItem('any-key-really', 'bar');
+    content.load('other/story.json');
+
+    restoreScreen.create.firstCall.args[2]();
+
+    assert.equal(server.requests.length, 1);
+    assert.equal(server.requests[0].url, 'other/story.json');
+    assert.strictEqual(localStorage.getItem('story'), null);
+    assert.strictEqual(localStorage.getItem('screen'), null);
+    assert.strictEqual(localStorage.getItem('any-key-really'), null);
+  });
+
+  it('stores story url in local storage', function () {
+    server.respondWith('GET', 'that/story.json', [200, {}, '{}']);
+    story.fromJson.returns(function () { return; });
+
+    content.load('that/story.json');
+    server.respond();
+
+    assert.equal(localStorage.getItem('story'), 'that/story.json');
+  });
+
+  it('does not store default story url in local storage', function () {
+    server.respondWith('GET', 'default.json', [200, {}, '{}']);
+    story.fromJson.returns(function () { return; });
+
+    content.load('default.json');
+    server.respond();
+
+    assert.strictEqual(localStorage.getItem('story'), null);
+  });
 
 });

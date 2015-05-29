@@ -1,4 +1,4 @@
-/*global describe, it, beforeEach, afterEach, document*/
+/*global describe, it, beforeEach, afterEach, document, localStorage*/
 'use strict';
 
 require('../lib/animate').disable();
@@ -52,6 +52,7 @@ describe('story', function () {
 
   afterEach(function () {
     locationTracker.create.restore();
+    localStorage.clear();
   });
 
   it('creates locations', sinon.test(function () {
@@ -882,5 +883,194 @@ describe('story', function () {
       });
     }, /Error: Screen "foo" is not used/);
   });
+
+  it('shows saved screen', function () {
+    localStorage.setItem('screen', 'two');
+
+    var story = makeStory.fromJson({
+      locations: {
+        start: dummyCircle
+      },
+      screens: {
+        start: {
+          type: 'text',
+          text: '## Welcome',
+          next: 'two'
+        },
+        two: {
+          type: 'text',
+          text: '## Oh, hi!',
+          next: 'finish'
+        },
+        finish: {
+          type: 'finish'
+        }
+      }
+    });
+    story(div);
+
+    assert.equal(div.querySelector('h2').innerHTML, 'Oh, hi!');
+  });
+
+  it('saves current screen name', sinon.test(function () {
+    this.stub(startScreen, 'create').yields();
+    var story = makeStory.fromJson({
+      locations: {
+        start: dummyCircle
+      },
+      screens: {
+        start: {
+          type: 'text',
+          text: '## Welcome',
+          next: 'two'
+        },
+        two: {
+          type: 'text',
+          text: '## Welcome',
+          next: 'end'
+        },
+        end: {
+          type: 'finish',
+          text: '## Goodbye'
+        }
+      }
+    });
+    story(div);
+
+    assert.equal(localStorage.getItem('screen'), 'start');
+
+    div.querySelector('.next').click();
+
+    assert.equal(localStorage.getItem('screen'), 'two');
+  }));
+
+  it('clears saved screen name on finish screen', sinon.test(function () {
+    this.stub(startScreen, 'create').yields();
+    var story = makeStory.fromJson({
+      locations: {
+        start: dummyCircle
+      },
+      screens: {
+        start: {
+          type: 'text',
+          text: '## Welcome',
+          next: 'end'
+        },
+        end: {
+          type: 'finish',
+          text: '## Goodbye'
+        }
+      }
+    });
+    story(div);
+    localStorage.setItem('any-unrelated-key', 'foo');
+
+    div.querySelector('.next').click();
+
+    assert.strictEqual(localStorage.getItem('screen'), null);
+    assert.equal(localStorage.getItem('any-unrelated-key'), 'foo');
+  }));
+
+  it('shows welcome screen after finish screen', sinon.test(function () {
+    this.stub(startScreen, 'create');
+    var story = makeStory.fromJson({
+      locations: {
+        start: dummyCircle
+      },
+      screens: {
+        start: {
+          type: 'text',
+          text: '## Welcome',
+          next: 'end'
+        },
+        end: {
+          type: 'finish',
+          text: '## Goodbye'
+        }
+      }
+    });
+    story(div);
+    startScreen.create.firstCall.yield();
+
+    div.querySelector('.next').click();
+    div.querySelector('.close').click();
+
+    sinon.assert.calledTwice(startScreen.create);
+  }));
+
+  it('stores, restores and removes startTime', sinon.test(function () {
+    this.stub(startScreen, 'create').yields();
+    this.clock.tick(60000);
+    var json = {
+      locations: {
+        start: dummyCircle
+      },
+      screens: {
+        start: {
+          type: 'text',
+          text: '## Welcome',
+          next: 'end'
+        },
+        end: {
+          type: 'finish',
+          text: '## Goodbye'
+        }
+      }
+    };
+    makeStory.fromJson(json)(div);
+
+    assert.equal(localStorage.getItem('startTime'), '60000');
+
+    this.clock.tick(35000);
+    div = document.createElement('div');
+    makeStory.fromJson(json)(div);
+    div.querySelector('.next').click();
+
+    assert.equal(div.querySelector('.results .value').innerHTML, '0:00:35');
+    assert.strictEqual(localStorage.getItem('startTime'), null);
+  }));
+
+  it('stores, restores and removes points', sinon.test(function () {
+    this.stub(startScreen, 'create').yields();
+    var json = {
+      locations: {
+        start: dummyCircle
+      },
+      screens: {
+        start: {
+          type: 'choices',
+          text: '## Welcome',
+          choices: [{
+            text: 'The one and only',
+            points: 42
+          }],
+          next: 'two'
+        },
+        two: {
+          type: 'text',
+          text: '## Great!',
+          next: 'end'
+        },
+        end: {
+          type: 'finish',
+          text: '## Goodbye'
+        }
+      }
+    };
+    makeStory.fromJson(json)(div);
+    var choice = div.querySelector('input[name=choice]');
+    choice.setAttribute('checked', 'checked');
+    choice.onchange();
+    div.querySelector('.next').click();
+
+    assert.equal(localStorage.getItem('points'), '42');
+
+    div = document.createElement('div');
+    makeStory.fromJson(json)(div);
+    div.querySelector('.next').click();
+
+    assert.equal(div.querySelector('.results .value').innerHTML, '42');
+    assert.strictEqual(localStorage.getItem('points'), null);
+  }));
 
 });
