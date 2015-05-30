@@ -1,5 +1,10 @@
 # Changes
 
+## 0.0.6
+
+- Add default screen
+- Move `default.json` to `tour.json`
+
 ## 0.0.5
 
 - Save and restore screen, points and startTime
