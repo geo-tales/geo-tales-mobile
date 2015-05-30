@@ -1,5 +1,9 @@
 # Changes
 
+## 0.0.7
+
+- Add google analytics tracking code
+
 ## 0.0.6
 
 - Add default screen
