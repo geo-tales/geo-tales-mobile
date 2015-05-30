@@ -1,29 +1,15 @@
 # Geo Tales mobile website
 
-Current status: Prototype
-
-## Building the website
-
-If you don't have it, install [node.js](http://nodejs.org).
-
-Install the required dependencies:
-
-    $ npm install
-
-Building the website:
-
-    $ npm run build
-
-Running the website locally:
-
-    $ npm start
-
-Then open <http://localhost:8080> in your browser.
+Current status: Beta
 
 ## Building stories
 
-To load a story locally, put a `my-story.json` file in the `public` directory
-and open <http://localhost:8080?story=my-story.json>
+The mobile web app is available at <http://geo-tales.github.io/mobile-app/>. To
+create a story, create a JSON file with the format described below. You can
+publish the file as a public or a secret gist at <https://gist.github.com>. To
+play the story, open the mobile web app with the gists "raw" URL like this:
+
+    http://geo-tales.github.io/mobile-app/?story={the-gist-raw-url}
 
 ## Story file format
 
@@ -44,6 +30,9 @@ with these properties:
 
 ### Locations
 
+There must be one location with the ID `"start"`. This marks the place where
+the player has to be in order to start the story.
+
 `type: "circle"`
 
 - `center`: The center of a circle consisting of:
@@ -59,12 +48,31 @@ with these properties:
 
 ### Screens
 
+There must be one screen with the ID `"start"`. This marks the screen that
+starts the story.
+
 `type: "text"`
+
+Displays rich text telling a part of the story with a button to proceed to the
+next screen.
 
 - `text`: Markdown to show as the text. Use `##` for headings.
 - `next`: The ID of the next screen to show.
 
+`type: "input"`
+
+Displays rich text and an input box. The player has to provide the correct
+answer to be allowed to proceed to the next screen.
+
+- `text`: Markdown to show as the text. Use `##` for headings.
+- `answer`: The correct answer.
+- `next`: The ID of the next screen to show.
+
 `type: "choices"`
+
+Displays rich text and a list of choices. Depending on the choice the player
+may receive points can continue to another screen. The "next" button is only
+shown if an option has been selected.
 
 - `text`: Markdown to show as the text. Use `##` for headings.
 - `choices`: An array of choice definitions consisting of:
@@ -76,6 +84,12 @@ with these properties:
   the selected choice.
 
 `type: "navigate"`
+
+Directs the player to another location. By default, this screen shows an arrow
+pointing in the direction of the location and the distance in meters. It can
+optionally change the background color with warmer colors indicating being
+closer to the location. The compass arrow and the distance can be hidden to
+only show the background color.
 
 - `location`: The ID of the location to navigate to.
 - `options`: Optional object with these optional properties:
@@ -89,5 +103,29 @@ with these properties:
 
 `type: "finish"`
 
+Each story must have at least one "finish" screen. Displays rich text, the time
+the player needed to finish the story and the points, if any where collected.
+
 - `text`: Optional markdown to show as the text. Defaults to
   "Congratulations! You have reached to end of the story.".
+
+## Building the mobile application
+
+If you don't have it, install [node.js](http://nodejs.org).
+
+Install the required dependencies:
+
+    $ npm install
+
+Building the website:
+
+    $ npm run build
+
+Running the website locally:
+
+    $ npm start
+
+Then open <http://localhost:8080> in your browser.
+
+To load a story locally, put a `my-story.json` file in the `public` directory
+and open <http://localhost:8080?story=my-story.json>
