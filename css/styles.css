@@ -154,3 +154,14 @@ form input[name=answer].incorrect {
   font-size: 24px;
   padding: 0;
 }
+form.story {
+  text-align: center;
+}
+form.story input {
+  display: block;
+  width: 200px;
+  margin: 5px auto;
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 10px;
+}

@@ -13,6 +13,7 @@ var navigateScreen = require('../lib/screen-navigate');
 var finishScreen = require('../lib/screen-finish');
 var startScreen = require('../lib/screen-start');
 var inputScreen = require('../lib/screen-input');
+var defaultScreen = require('../lib/screen-default');
 var makeStory = require('../lib/story');
 
 
@@ -968,11 +969,12 @@ describe('story', function () {
     div.querySelector('.next').click();
 
     assert.strictEqual(localStorage.getItem('screen'), null);
-    assert.equal(localStorage.getItem('any-unrelated-key'), 'foo');
+    assert.strictEqual(localStorage.getItem('any-unrelated-key'), null);
   }));
 
-  it('shows welcome screen after finish screen', sinon.test(function () {
+  it('shows default screen after finish screen', sinon.test(function () {
     this.stub(startScreen, 'create');
+    this.stub(defaultScreen, 'create');
     var story = makeStory.fromJson({
       locations: {
         start: dummyCircle
@@ -995,7 +997,8 @@ describe('story', function () {
     div.querySelector('.next').click();
     div.querySelector('.close').click();
 
-    sinon.assert.calledTwice(startScreen.create);
+    sinon.assert.calledOnce(defaultScreen.create);
+    sinon.assert.calledWith(defaultScreen.create, div);
   }));
 
   it('stores, restores and removes startTime', sinon.test(function () {
