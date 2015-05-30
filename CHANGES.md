@@ -1,5 +1,11 @@
 # Changes
 
+## 0.0.5
+
+- Save and restore screen, points and startTime
+- Add screen that asks whether to discard or continue the last story
+- Improve file format documentation and instructions for building stories
+
 ## 0.0.4
 
 - Prevent user text selection on iOS
