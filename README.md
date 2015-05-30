@@ -6,12 +6,15 @@ Current status: Beta
 
 The mobile web app is available at <http://geo-tales.github.io/mobile-app/>. To
 create a story, create a JSON file with the format described below. You can
-publish the file as a public or a secret gist at <https://gist.github.com>. To
-play the story, open the mobile web app with the gists "raw" URL like this:
+publish the file as a public or a secret at <https://gist.github.com>. To
+play the story, open the mobile web app with the JSON files "raw" URL like
+this:
 
-    http://geo-tales.github.io/mobile-app/?story={the-gist-raw-url}
+    http://geo-tales.github.io/mobile-app/?story={gist-json-file-raw-url}
 
 ## Story file format
+
+Check out [the tour.json file][tour] for an example.
 
 Stories are described in JSON files. An example can be found in
 `public/all-screens.json`. Each JSON file must contain exactly one JSON object
@@ -111,7 +114,11 @@ the player needed to finish the story and the points, if any where collected.
 
 ## Building the mobile application
 
-If you don't have it, install [node.js](http://nodejs.org).
+You don't need to build the app yourself. You can use the latest version on
+the geo-tales website. If you want to help on improving the web application,
+keep reading.
+
+If you don't have it, install [node.js][].
 
 Install the required dependencies:
 
@@ -129,3 +136,6 @@ Then open <http://localhost:8080> in your browser.
 
 To load a story locally, put a `my-story.json` file in the `public` directory
 and open <http://localhost:8080?story=my-story.json>
+
+[tour]: https://github.com/geo-tales/geo-tales-mobile/blob/master/public/tour.json
+[node.js]: http://nodejs.org
