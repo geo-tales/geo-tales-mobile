@@ -130,10 +130,10 @@ describe('content-manager', function () {
   });
 
   it('does not store default story url in local storage', function () {
-    server.respondWith('GET', 'default.json', [200, {}, '{}']);
+    server.respondWith('GET', 'tour.json', [200, {}, '{}']);
     story.fromJson.returns(function () { return; });
 
-    content.load('default.json');
+    content.load('tour.json');
     server.respond();
 
     assert.strictEqual(localStorage.getItem('story'), null);

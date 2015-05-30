@@ -20,8 +20,13 @@
   },
   "screens": {
     "start": {
+      "type": "text",
+      "text": "## Screens tour\n\nWelcome to the Geo Tales screens tour.\n\nEach story is made up of a series of screens. Screens can tell a part of the story, let you navigate to a specific location or ask a question.\n\nClick on the arrow below to start.",
+      "next": "menu"
+    },
+    "menu": {
       "type": "choices",
-      "text": "## Pick a screen type",
+      "text": "## Screen types\n\nSelect a screen type:",
       "choices": [{
         "text": "Navigation with arrow and distance",
         "next": "nav-defaults"
@@ -45,7 +50,7 @@
     "nav-defaults": {
       "type": "navigate",
       "location": "A",
-      "next": "start"
+      "next": "menu"
     },
     "nav-color": {
       "type": "navigate",
@@ -55,18 +60,18 @@
         "compass": false,
         "distance": false
       },
-      "next": "start"
+      "next": "menu"
     },
     "1": {
       "type": "text",
       "text": "## Simple Text Screen\n\nTell a part of the story or describe the current location.\n\nFree text, written in [markdown](https://help.github.com/articles/markdown-basics/).",
-      "next": "start"
+      "next": "menu"
     },
     "2": {
       "type": "input",
       "text": "## Input Screen\n\nAsk a question, and only the correct answer will let the player continue.\n\n_1 + 2?_",
       "answer": 3,
-      "next": "start"
+      "next": "menu"
     },
     "3": {
       "type": "choices",
@@ -80,7 +85,7 @@
       }, {
         "text": "It's also possible to have a default 'next' property on the choices definition. Specifying 'next' on an option takes precedence over the default."
       }],
-      "next": "start"
+      "next": "menu"
     },
     "finish": {
       "type": "finish"
