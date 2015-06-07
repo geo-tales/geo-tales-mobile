@@ -51,7 +51,7 @@ describe('location-tracker', function () {
     sinon.assert.calledOnce(spy);
     sinon.assert.calledWith(spy, {
       code: 2,
-      message: 'broken'
+      message: 'Position tracking unavailable'
     });
   });
 
