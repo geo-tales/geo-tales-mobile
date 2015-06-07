@@ -8,7 +8,7 @@
 /*global describe, it, beforeEach, afterEach, document, localStorage*/
 'use strict';
 
-require('../lib/animate').disable();
+require('animatify').disable();
 
 var assert = require('assert');
 var sinon = require('sinon');

@@ -1,5 +1,11 @@
 # Changes
 
+## next
+
+- Move animation code to separate [animatify][] module
+
+[animaitfy]: https://github.com/mantoni/animatify.js
+
 ## 0.0.7
 
 - Add google analytics tracking code
