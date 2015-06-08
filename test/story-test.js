@@ -12,8 +12,8 @@ require('animatify').disable();
 
 var assert = require('assert');
 var sinon = require('sinon');
+var locationTracker = require('locatify');
 var locationModel = require('../lib/location-model');
-var locationTracker = require('../lib/location-tracker');
 var textScreen = require('../lib/screen-text');
 var choicesScreen = require('../lib/screen-multiple-choice');
 var navigateScreen = require('../lib/screen-navigate');

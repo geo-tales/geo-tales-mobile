@@ -26,6 +26,7 @@
   "devDependencies": {
     "animate.css": "^3.2.5",
     "animatify": "^1.0.0",
+    "locatify": "^1.0.0",
     "brfs": "^1.4.0",
     "browserify": "^10.2.0",
     "geolib": "^2.0.14",
