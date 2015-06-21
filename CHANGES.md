@@ -1,10 +1,13 @@
 # Changes
 
-## next
+## 0.0.8
 
 - Move animation code to separate [animatify][] module
+- Move error message display out of location-tracker
+- Move location-tracket to separate [locatify][] module
 
 [animaitfy]: https://github.com/mantoni/animatify.js
+[locatify]: https://github.com/mantoni/locatify.js
 
 ## 0.0.7
 
