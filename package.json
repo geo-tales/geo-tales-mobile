@@ -22,6 +22,7 @@
     "release": "npm run test && npm run build && cp public/* ../geo-tales.github.io/mobile-app/"
   },
   "author": "Maximilian Antoni <mail@maxantoni.de> (http://maxantoni.de)",
+  "homepage": "https://github.com/geo-tales/geo-tales-mobile",
   "license": "MIT",
   "devDependencies": {
     "animate.css": "^3.2.5",
