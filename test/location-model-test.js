@@ -103,7 +103,7 @@ describe('localtion-model Polygon', function () {
         longitude: 9.1003
       });
 
-      assert.equal(result, 44);
+      assert.equal(result, 43);
     });
 
   });
