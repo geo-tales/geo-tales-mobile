@@ -90,6 +90,7 @@ describe('content-manager', function () {
 
   it('asks what to do if story state is found in local storage', function () {
     localStorage.setItem('story', 'some/story.json');
+    localStorage.setItem('screen', '0');
 
     content.load('other/story.json');
 
@@ -102,6 +103,7 @@ describe('content-manager', function () {
 
   it('loads previous story and restores saved story state', function () {
     localStorage.setItem('story', 'some/story.json');
+    localStorage.setItem('screen', '0');
     content.load('other/story.json');
 
     restoreScreen.create.firstCall.args[1]();
@@ -109,6 +111,17 @@ describe('content-manager', function () {
     assert.equal(server.requests.length, 1);
     assert.equal(server.requests[0].url, 'some/story.json');
     assert.equal(localStorage.getItem('story'), 'some/story.json');
+  });
+
+  it('does not restore previous state if no screen was saved', function () {
+    localStorage.setItem('story', 'some/story.json');
+    content.load('other/story.json');
+
+    sinon.assert.notCalled(restoreScreen.create);
+    sinon.assert.notCalled(story.fromJson);
+    assert.equal(server.requests.length, 1);
+    assert.equal(server.requests[0].url, 'other/story.json');
+    assert.strictEqual(localStorage.getItem('story'), null);
   });
 
   it('discard existing story state and loads new story', function () {
