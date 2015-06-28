@@ -17,6 +17,7 @@
     "watch:bundle": "watchify --debug . -o public/bundle-$npm_package_version.js",
     "build:html": "cat lib/index.html | sed \"s/VERSION/$npm_package_version/g\" > public/index.html",
     "build:js": "browserify . | uglifyjs -c -m -o public/bundle-$npm_package_version.js",
+    "build:debug": "browserify --debug -o public/bundle-$npm_package_version.js .",
     "build:css": "cat node_modules/normalize.css/normalize.css node_modules/animate.css/animate.css css/styles.css > public/styles-$npm_package_version.css",
     "build": "npm run build:html && npm run build:js && npm run build:css",
     "release": "npm run test && npm run build && cp public/* ../geo-tales.github.io/mobile-app/"
