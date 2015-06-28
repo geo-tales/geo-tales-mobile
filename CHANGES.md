@@ -1,5 +1,9 @@
 # Changes
 
+## 0.0.9
+
+- Build with fix in locatify
+
 ## 0.0.8
 
 - Move animation code to separate [animatify][] module
