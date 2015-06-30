@@ -93,9 +93,10 @@ describe('screen-navigate', function () {
       alpha: 120
     });
 
-    assert.equal(div.querySelector('.arrow').style.transform, 'rotate(60deg)');
+    assert.equal(div.querySelector('.arrow').style.transform,
+        'rotate(300deg)');
     assert.equal(div.querySelector('.arrow').style.webkitTransform,
-        'rotate(60deg)');
+        'rotate(300deg)');
   });
 
   it('shows bad accuracy if not accurate enough', function () {
