@@ -1,5 +1,13 @@
 # Changes
 
+## 0.0.10
+
+- Fixes for Android
+- Do not attempt to restore a story if no screen was saved yet
+- Show error message if location tracking does not work
+- Don't apply negative deg
+- Show message after timeout if no location data is received
+
 ## 0.0.9
 
 - Build with fix in locatify
