@@ -4,13 +4,13 @@ Current status: Beta
 
 ## Building stories
 
-The mobile web app is available at <http://geo-tales.github.io/mobile-app/>. To
+The mobile web app is available at <https://geo-tales.github.io/mobile-app/>. To
 create a story, create a JSON file with the format described below. You can
 publish the file as a public or a secret at <https://gist.github.com>. To
 play the story, open the mobile web app with the JSON files "raw" URL like
 this:
 
-    http://geo-tales.github.io/mobile-app/?story={gist-json-file-raw-url}
+    https://geo-tales.github.io/mobile-app/?story={gist-json-file-raw-url}
 
 ## Story file format
 
