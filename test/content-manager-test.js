@@ -24,7 +24,7 @@ describe('content-manager', function () {
     sinon.stub(story, 'fromJson');
     sinon.stub(restoreScreen, 'create');
     server = sinon.fakeServer.create();
-    div = document.createElement();
+    div = document.createElement('div');
     content = contentManager.create(div);
   });
 
@@ -62,8 +62,8 @@ describe('content-manager', function () {
     assert.equal(div.querySelector('h2').innerHTML, 'Failed to load story!');
     var p = div.querySelectorAll('p');
     assert.equal(p[0].innerHTML, 'some/story.json');
-    assert.equal(p[1].innerHTML,
-        '<code>SyntaxError: Unable to parse JSON string</code>');
+    assert.equal(p[1].innerHTML, '<code>SyntaxError: Unexpected token &lt; '
+      + 'in JSON at position 0</code>');
   });
 
   it('creates text screen with error message if story throws', function () {

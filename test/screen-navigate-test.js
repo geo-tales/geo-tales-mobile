@@ -179,7 +179,7 @@ describe('screen-navigate', function () {
       alpha: 120
     });
 
-    assert.equal(div.querySelector('.arrow').style.transform, undefined);
+    assert.equal(div.querySelector('.arrow').style.transform, '');
   });
 
   it('does not render distance and accuracy', function () {
