@@ -9,14 +9,6 @@
 
 const sinon = require('sinon');
 
-if (!navigator.geolocation) {
-  // PhantomJS doesn't support geolocation.
-  navigator.geolocation = {
-    watchPosition() { return; },
-    clearWatch() { return; }
-  };
-}
-
 exports.create = function (defaultAccuracy) {
   const watch = sinon.stub(navigator.geolocation, 'watchPosition');
   const clear = sinon.stub(navigator.geolocation, 'clearWatch');
