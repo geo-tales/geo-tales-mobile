@@ -1,3 +1,4 @@
+/*eslint-env mocha*/
 /*
  * geo-tales-mobile
  *
@@ -5,41 +6,39 @@
  *
  * @license MIT
  */
-/*global describe, it, beforeEach, afterEach, document*/
 'use strict';
 
 require('animatify').disable();
 
-var assert = require('assert');
-var sinon = require('sinon');
-var screen = require('../lib/screen-multiple-choice');
+const assert = require('assert');
+const sinon = require('sinon');
+const screen = require('../lib/screen-multiple-choice');
 
+describe('screen-multiple-choice', () => {
+  let div;
 
-describe('screen-multiple-choice', function () {
-  var div;
-
-  beforeEach(function () {
+  beforeEach(() => {
     div = document.createElement('div');
   });
 
-  it('renders markdown and choices', function () {
+  it('renders markdown and choices', () => {
     screen.create(div, '## Heading\n\nSome text', [{
       text: 'First option'
     }, {
       text: 'Second _option_'
-    }], function () { return; });
+    }], () => { return; });
 
     assert.equal(div.querySelector('.text').innerHTML,
       '<h2 id="heading">Heading</h2>\n<p>Some text</p>\n');
-    var choices = div.querySelectorAll('.choice');
+    const choices = div.querySelectorAll('.choice');
     assert.equal(choices.length, 2);
     assert.equal(choices[0].querySelector('.label').innerHTML, 'First option');
     assert.equal(choices[1].querySelector('.label').innerHTML,
       'Second <em>option</em>');
   });
 
-  it('invokes callback on next click with selection', function () {
-    var spy = sinon.spy();
+  it('invokes callback on next click with selection', () => {
+    const spy = sinon.spy();
     screen.create(div, 'Bla', [{
       text: 'A',
       screen: 'abc',
@@ -50,7 +49,7 @@ describe('screen-multiple-choice', function () {
       points: 1
     }], spy);
 
-    var choice = div.querySelector('input[name=choice]');
+    const choice = div.querySelector('input[name=choice]');
     choice.setAttribute('checked', 'checked');
     choice.onchange();
     div.querySelector('.next').click();
@@ -59,8 +58,8 @@ describe('screen-multiple-choice', function () {
     sinon.assert.calledWith(spy, { text: 'A', screen: 'abc', points: 3 });
   });
 
-  it('does not invoke callback on next click if no selection', function () {
-    var spy = sinon.spy();
+  it('does not invoke callback on next click if no selection', () => {
+    const spy = sinon.spy();
     screen.create(div, 'Bla', [{
       text: 'A',
       screen: 'abc',
@@ -76,22 +75,22 @@ describe('screen-multiple-choice', function () {
     sinon.assert.notCalled(spy);
   });
 
-  it('does not show footer by default', function () {
+  it('does not show footer by default', () => {
     screen.create(div, 'Bla', [{
       text: 'A'
     }, {
       text: 'B'
-    }], function () { return; });
+    }], () => { return; });
 
     assert.equal(div.querySelector('.footer').style.display, 'none');
   });
 
-  it('shows footer on choice selection', function () {
+  it('shows footer on choice selection', () => {
     screen.create(div, 'Bla', [{
       text: 'A'
     }, {
       text: 'B'
-    }], function () { return; });
+    }], () => { return; });
 
     div.querySelectorAll('input[name=choice]')[1].onchange();
 

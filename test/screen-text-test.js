@@ -1,3 +1,4 @@
+/*eslint-env mocha*/
 /*
  * geo-tales-mobile
  *
@@ -5,32 +6,30 @@
  *
  * @license MIT
  */
-/*global describe, it, beforeEach, afterEach, document*/
 'use strict';
 
 require('animatify').disable();
 
-var assert = require('assert');
-var sinon = require('sinon');
-var screen = require('../lib/screen-text');
+const assert = require('assert');
+const sinon = require('sinon');
+const screen = require('../lib/screen-text');
 
+describe('screen-text', () => {
+  let div;
 
-describe('screen-text', function () {
-  var div;
-
-  beforeEach(function () {
+  beforeEach(() => {
     div = document.createElement('div');
   });
 
-  it('renders markdown', function () {
-    screen.create(div, '## Heading\n\nSome text', function () { return; });
+  it('renders markdown', () => {
+    screen.create(div, '## Heading\n\nSome text', () => { return; });
 
     assert.equal(div.querySelector('.text').innerHTML,
       '<h2 id="heading">Heading</h2>\n<p>Some text</p>\n');
   });
 
-  it('invokes callback on next click', function () {
-    var spy = sinon.spy();
+  it('invokes callback on next click', () => {
+    const spy = sinon.spy();
     screen.create(div, 'Bla', spy);
 
     div.querySelector('.next').click();

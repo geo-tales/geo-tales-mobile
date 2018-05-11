@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "http-server public",
-    "lint": "jslint --edition=latest --color \"lib/*.js\" \"test/*.js\"",
+    "lint": "eslint lib/*.js test/*.js test/util/*.js",
     "pretest": "npm run lint",
     "test": "mochify",
     "watch:test": "mochify -w",
@@ -25,17 +25,27 @@
   "author": "Maximilian Antoni <mail@maxantoni.de> (http://maxantoni.de)",
   "homepage": "https://github.com/geo-tales/geo-tales-mobile",
   "license": "MIT",
+  "eslintConfig": {
+    "extends": "@studio",
+    "env": {
+      "browser": true
+    },
+    "rules": {
+      "no-sync": 0
+    }
+  },
   "devDependencies": {
+    "@studio/eslint-config": "^1.0.2",
     "animate.css": "^3.2.5",
     "animatify": "^1.0.0",
-    "locatify": "^1.0.0",
     "brfs": "^1.4.0",
     "browserify": "^10.2.0",
+    "eslint": "^4.19.1",
     "geolib": "^2.0.14",
     "http-server": "^0.8.0",
     "hyperglue": "^2.0.1",
     "inherits": "^2.0.1",
-    "jslint": "^0.8.0",
+    "locatify": "^2.0.0",
     "marked": "^0.3.3",
     "mochify": "^5.6.0",
     "normalize.css": "^3.0.3",

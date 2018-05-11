@@ -1,3 +1,4 @@
+/*eslint-env mocha*/
 /*
  * geo-tales-mobile
  *
@@ -5,27 +6,25 @@
  *
  * @license MIT
  */
-/*global describe, it, beforeEach, afterEach, document, Element*/
 'use strict';
 
 require('animatify').disable();
 
-var assert = require('assert');
-var sinon = require('sinon');
-var navigate = require('../lib/screen-navigate');
-var locationModel = require('../lib/location-model');
-var fakeLocation = require('./util/fake-location');
+const assert = require('assert');
+const sinon = require('sinon');
+const navigate = require('../lib/screen-navigate');
+const locationModel = require('../lib/location-model');
+const fakeLocation = require('./util/fake-location');
 
+describe('screen-navigate', () => {
+  let loc;
+  let div;
+  let circle;
+  let screen;
+  let clock;
+  let next;
 
-describe('screen-navigate', function () {
-  var loc;
-  var div;
-  var circle;
-  var screen;
-  var clock;
-  var next;
-
-  beforeEach(function () {
+  beforeEach(() => {
     loc = fakeLocation.create();
     div = document.createElement('div');
     circle = new locationModel.Circle({
@@ -36,7 +35,7 @@ describe('screen-navigate', function () {
     next = sinon.spy();
   });
 
-  afterEach(function () {
+  afterEach(() => {
     if (screen) {
       screen.destroy();
     }
@@ -48,7 +47,7 @@ describe('screen-navigate', function () {
     screen = navigate.create(div, circle, opts || {}, next);
   }
 
-  it('renders compass, arrow and distance fields', function () {
+  it('renders compass, arrow and distance fields', () => {
     render();
 
     assert(div.querySelector('.compass') instanceof Element);
@@ -56,7 +55,7 @@ describe('screen-navigate', function () {
     assert(div.querySelector('.distance') instanceof Element);
   });
 
-  it('displays distance and accuracy', function () {
+  it('displays distance and accuracy', () => {
     render();
 
     loc.updatePosition({
@@ -69,7 +68,7 @@ describe('screen-navigate', function () {
     assert.equal(div.querySelector('.accuracy').innerHTML, '5 m');
   });
 
-  it('rounds accuracy', function () {
+  it('rounds accuracy', () => {
     render();
 
     loc.updatePosition({
@@ -81,7 +80,7 @@ describe('screen-navigate', function () {
     assert.equal(div.querySelector('.accuracy').innerHTML, '16 m');
   });
 
-  it('updates arrow rotation', function () {
+  it('updates arrow rotation', () => {
     render();
 
     loc.updatePosition({
@@ -94,12 +93,12 @@ describe('screen-navigate', function () {
     });
 
     assert.equal(div.querySelector('.arrow').style.transform,
-        'rotate(300deg)');
+      'rotate(300deg)');
     assert.equal(div.querySelector('.arrow').style.webkitTransform,
-        'rotate(300deg)');
+      'rotate(300deg)');
   });
 
-  it('shows bad accuracy if not accurate enough', function () {
+  it('shows bad accuracy if not accurate enough', () => {
     render();
 
     loc.updatePosition({
@@ -111,7 +110,7 @@ describe('screen-navigate', function () {
     assert(div.querySelector('.accuracy').classList.contains('bad'));
   });
 
-  it('hides warning if accuracy gets better', function () {
+  it('hides warning if accuracy gets better', () => {
     render();
 
     loc.updatePosition({
@@ -129,10 +128,10 @@ describe('screen-navigate', function () {
     });
 
     assert.equal(div.querySelector('.accuracy').classList.contains('bad'),
-        false);
+      false);
   });
 
-  it('shows info message and footer once insde shape', function () {
+  it('shows info message and footer once insde shape', () => {
     render();
     assert.equal(div.querySelector('.footer').style.display, 'none');
 
@@ -145,7 +144,7 @@ describe('screen-navigate', function () {
     assert.equal(div.querySelector('.footer').style.display, 'block');
   });
 
-  it('invokes next once inside shape and user clicks next', function () {
+  it('invokes next once inside shape and user clicks next', () => {
     render();
 
     loc.updatePosition({
@@ -159,7 +158,7 @@ describe('screen-navigate', function () {
     sinon.assert.calledOnce(next);
   });
 
-  it('does not render compass', function () {
+  it('does not render compass', () => {
     render({ compass : false });
 
     assert.equal(div.querySelector('.compass').style.display, 'none');
@@ -167,7 +166,7 @@ describe('screen-navigate', function () {
     assert(div.querySelector('.accuracy') instanceof Element);
   });
 
-  it('does not update arrow rotation', function () {
+  it('does not update arrow rotation', () => {
     render({ compass : false });
 
     loc.updatePosition({
@@ -182,7 +181,7 @@ describe('screen-navigate', function () {
     assert.equal(div.querySelector('.arrow').style.transform, '');
   });
 
-  it('does not render distance and accuracy', function () {
+  it('does not render distance and accuracy', () => {
     render({ distance : false });
 
     loc.updatePosition({
@@ -195,7 +194,7 @@ describe('screen-navigate', function () {
     assert.equal(div.querySelector('.accuracy').innerHTML, '');
   });
 
-  it('renders accuracy anyway if bad', function () {
+  it('renders accuracy anyway if bad', () => {
     render({ distance : false });
 
     loc.updatePosition({
@@ -209,7 +208,7 @@ describe('screen-navigate', function () {
     assert(div.querySelector('.accuracy').classList.contains('bad'));
   });
 
-  it('removes accuracy again if it gets better', function () {
+  it('removes accuracy again if it gets better', () => {
     render({ distance : false });
 
     loc.updatePosition({
@@ -229,7 +228,7 @@ describe('screen-navigate', function () {
       false);
   });
 
-  it('sets background color', function () {
+  it('sets background color', () => {
     render({ colorSteps : 10 });
 
     loc.updatePosition({
@@ -244,10 +243,10 @@ describe('screen-navigate', function () {
     });
 
     assert.equal(document.documentElement.style.backgroundColor,
-        'rgb(0, 182, 255)');
+      'rgb(0, 182, 255)');
   });
 
-  it('resets background on bad accuracy', function () {
+  it('resets background on bad accuracy', () => {
     document.documentElement.style.backgroundColor = '#ff0000';
     render({ colorSteps : 10 });
 
@@ -260,7 +259,7 @@ describe('screen-navigate', function () {
     assert.equal(document.documentElement.style.backgroundColor, 'inherit');
   });
 
-  it('resets background color once inside shape', function () {
+  it('resets background color once inside shape', () => {
     document.documentElement.style.backgroundColor = '#ff0000';
     render();
 
@@ -275,7 +274,7 @@ describe('screen-navigate', function () {
     assert.equal(document.documentElement.style.backgroundColor, 'inherit');
   });
 
-  it('shows footer if screen is opened within shape', function () {
+  it('shows footer if screen is opened within shape', () => {
     render();
 
     loc.updatePosition({
@@ -287,7 +286,7 @@ describe('screen-navigate', function () {
     assert.equal(div.querySelector('.footer').style.display, 'block');
   });
 
-  it('does not show footer if accuracy is bad', function () {
+  it('does not show footer if accuracy is bad', () => {
     render();
 
     loc.updatePosition({

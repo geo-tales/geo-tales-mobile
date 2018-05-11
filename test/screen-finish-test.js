@@ -1,3 +1,4 @@
+/*eslint-env mocha*/
 /*
  * geo-tales-mobile
  *
@@ -5,31 +6,28 @@
  *
  * @license MIT
  */
-/*global describe, it, beforeEach, afterEach, document*/
 'use strict';
 
 require('animatify').disable();
 
-var assert = require('assert');
-var sinon = require('sinon');
-var screen = require('../lib/screen-finish');
+const assert = require('assert');
+const screen = require('../lib/screen-finish');
 
+describe('screen-finish', () => {
+  let div;
 
-describe('screen-finish', function () {
-  var div;
-
-  beforeEach(function () {
+  beforeEach(() => {
     div = document.createElement('div');
   });
 
-  it('renders markdown', function () {
+  it('renders markdown', () => {
     screen.create(div, '## Heading\n\nSome text', {});
 
     assert.equal(div.querySelector('.text').innerHTML,
       '<h2 id="heading">Heading</h2>\n<p>Some text</p>\n');
   });
 
-  it('defaults text', function () {
+  it('defaults text', () => {
     screen.create(div, null, {});
 
     assert.equal(div.querySelector('.text').innerHTML,
@@ -37,7 +35,7 @@ describe('screen-finish', function () {
       + '<p>You reached the end of this story.</p>\n');
   });
 
-  it('shows points', function () {
+  it('shows points', () => {
     screen.create(div, 'Bla', {
       points: 42
     });
@@ -46,7 +44,7 @@ describe('screen-finish', function () {
     assert.equal(div.querySelector('.results .value').innerHTML, '42');
   });
 
-  it('shows 0 points', function () {
+  it('shows 0 points', () => {
     screen.create(div, 'Bla', {
       points: 0
     });
@@ -55,7 +53,7 @@ describe('screen-finish', function () {
     assert.equal(div.querySelector('.results .value').innerHTML, '0');
   });
 
-  it('does not show undefined points', function () {
+  it('does not show undefined points', () => {
     screen.create(div, 'Bla', {
       points: undefined
     });
@@ -63,7 +61,7 @@ describe('screen-finish', function () {
     assert.equal(div.querySelector('.results .name'), null);
   });
 
-  it('shows time', function () {
+  it('shows time', () => {
     screen.create(div, 'Bla', {
       time: 3600000 + 4 * 60000 + 35000
     });

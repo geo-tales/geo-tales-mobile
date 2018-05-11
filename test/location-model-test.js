@@ -1,3 +1,4 @@
+/*eslint-env mocha*/
 /*
  * geo-tales-mobile
  *
@@ -5,24 +6,22 @@
  *
  * @license MIT
  */
-/*global describe, it, beforeEach, afterEach*/
 'use strict';
 
-var assert = require('assert');
-var model = require('../lib/location-model');
+const assert = require('assert');
+const model = require('../lib/location-model');
 
+describe('localtion-model Circle', () => {
 
-describe('localtion-model Circle', function () {
-
-  var circle = new model.Circle({
+  const circle = new model.Circle({
     latitude: 47.0,
     longitude: 9.1
   }, 25);
 
-  describe('within', function () {
+  describe('within', () => {
 
-    it('returns true if within circle', function () {
-      var result = circle.within({
+    it('returns true if within circle', () => {
+      const result = circle.within({
         latitude: 47.0002,
         longitude: 9.1
       });
@@ -30,8 +29,8 @@ describe('localtion-model Circle', function () {
       assert.equal(result, true);
     });
 
-    it('returns false if without circle', function () {
-      var result = circle.within({
+    it('returns false if without circle', () => {
+      const result = circle.within({
         latitude: 47.00025,
         longitude: 9.1
       });
@@ -41,10 +40,10 @@ describe('localtion-model Circle', function () {
 
   });
 
-  describe('distance', function () {
+  describe('distance', () => {
 
-    it('returns distance in meters', function () {
-      var result = circle.distance({
+    it('returns distance in meters', () => {
+      const result = circle.distance({
         latitude: 47.0002,
         longitude: 9.1
       });
@@ -56,10 +55,9 @@ describe('localtion-model Circle', function () {
 
 });
 
+describe('localtion-model Polygon', () => {
 
-describe('localtion-model Polygon', function () {
-
-  var polygon = new model.Polygon([{
+  const polygon = new model.Polygon([{
     latitude: 47.0,
     longitude: 9.1
   }, {
@@ -73,10 +71,10 @@ describe('localtion-model Polygon', function () {
     longitude: 9.1
   }]);
 
-  describe('within', function () {
+  describe('within', () => {
 
-    it('returns true if within circle', function () {
-      var result = polygon.within({
+    it('returns true if within circle', () => {
+      const result = polygon.within({
         latitude: 47.00021,
         longitude: 9.1003
       });
@@ -84,8 +82,8 @@ describe('localtion-model Polygon', function () {
       assert.equal(result, true);
     });
 
-    it('returns false if without circle', function () {
-      var result = polygon.within({
+    it('returns false if without circle', () => {
+      const result = polygon.within({
         latitude: 47.00023,
         longitude: 9.1002
       });
@@ -95,10 +93,10 @@ describe('localtion-model Polygon', function () {
 
   });
 
-  describe('distance', function () {
+  describe('distance', () => {
 
-    it('returns distance in meters', function () {
-      var result = polygon.distance({
+    it('returns distance in meters', () => {
+      const result = polygon.distance({
         latitude: 47.0005,
         longitude: 9.1003
       });
@@ -110,18 +108,17 @@ describe('localtion-model Polygon', function () {
 
 });
 
+describe('localtion-model fromJson', () => {
 
-describe('localtion-model fromJson', function () {
-
-  it('creates circle', function () {
-    var center = {
+  it('creates circle', () => {
+    const center = {
       latitude: 47.001,
       longitutde: 9.1
     };
 
-    var circle = model.fromJson({
+    const circle = model.fromJson({
       type: 'circle',
-      center: center,
+      center,
       radius: 3
     });
 
@@ -130,8 +127,8 @@ describe('localtion-model fromJson', function () {
     assert.equal(circle.radius, 3);
   });
 
-  it('creates polygon', function () {
-    var coords = [{
+  it('creates polygon', () => {
+    const coords = [{
       latitude: 47.0,
       longitude: 9.1
     }, {
@@ -145,17 +142,17 @@ describe('localtion-model fromJson', function () {
       longitude: 9.1
     }];
 
-    var circle = model.fromJson({
+    const circle = model.fromJson({
       type: 'polygon',
-      coords: coords
+      coords
     });
 
     assert(circle instanceof model.Polygon);
     assert.deepEqual(circle.coords, coords);
   });
 
-  it('throws if type is unknown', function () {
-    assert.throws(function () {
+  it('throws if type is unknown', () => {
+    assert.throws(() => {
       model.fromJson({
         type: 'unknown'
       });
