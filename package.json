@@ -19,7 +19,7 @@
     "build:js": "browserify . -g es2040 -p tinyify --debug | exorcist public/bundle-$npm_package_version.js.map > public/bundle-$npm_package_version.js",
     "build:css": "cat node_modules/normalize.css/normalize.css node_modules/animate.css/animate.css css/styles.css > public/styles-$npm_package_version.css",
     "build": "npm run build:html && npm run build:js && npm run build:css",
-    "release": "npm run build && cp public/* ../geo-tales.github.io/mobile-app/",
+    "release": "rm -f public/*.{js,css,map} && npm run build && cp public/* ../geo-tales.github.io/mobile-app/",
     "preversion": "npm test",
     "version": "changes",
     "postversion": "git push --follow-tags && npm publish && npm run release"
