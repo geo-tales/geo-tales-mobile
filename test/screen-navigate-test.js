@@ -84,11 +84,13 @@ describe('screen-navigate', () => {
     render();
 
     loc.updatePosition({
+      absolute: true,
       longitude: 47.051,
       latitude: 9.1,
       accuracy: 10
     });
     loc.updateOrientation({
+      absolute: true,
       alpha: 120
     });
 
@@ -124,6 +126,7 @@ describe('screen-navigate', () => {
       accuracy: 19
     });
     loc.updateOrientation({
+      absolute: true,
       alpha: 120
     });
 
@@ -175,6 +178,7 @@ describe('screen-navigate', () => {
       accuracy: 10
     });
     loc.updateOrientation({
+      absolute: true,
       alpha: 120
     });
 
