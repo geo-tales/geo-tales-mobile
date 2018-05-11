@@ -1,5 +1,10 @@
 # Changes
 
+## 0.0.13
+
+- Avoid opening a browser on local navigation in PWA
+- Add app title, status bar style and icons
+
 ## 0.0.12
 
 - Update locatify and fix tests accordingly
