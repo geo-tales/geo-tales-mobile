@@ -1,5 +1,15 @@
 # Changes
 
+## 0.0.11
+
+- Use Studio Changes for releases
+- Upgrade sinon to v5
+- Modernize browserify setup
+- Switch to eslint and update to ES6
+- Remove argument passed to locatify
+- Use https URLs for mobile app since location API requires it
+- Upgrade mochify and ajust tests
+
 ## 0.0.10
 
 - Fixes for Android
