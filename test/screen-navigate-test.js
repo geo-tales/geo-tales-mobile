@@ -40,7 +40,7 @@ describe('screen-navigate', () => {
       screen.destroy();
     }
     loc.destroy();
-    clock.restore();
+    sinon.restore();
   });
 
   function render(opts) {

@@ -51,19 +51,22 @@ const dummyPolygon = {
 
 describe('story', () => {
   let div;
+  let clock;
 
   beforeEach(() => {
     div = document.createElement('div');
     sinon.spy(locationTracker, 'create');
+    clock = sinon.useFakeTimers();
   });
 
   afterEach(() => {
     locationTracker.create.restore();
     localStorage.clear();
+    sinon.restore();
   });
 
-  it('creates locations', sinon.test(function () {
-    this.spy(locationModel, 'fromJson');
+  it('creates locations', () => {
+    sinon.spy(locationModel, 'fromJson');
 
     makeStory.fromJson({
       locations: {
@@ -85,7 +88,7 @@ describe('story', () => {
     sinon.assert.calledTwice(locationModel.fromJson);
     sinon.assert.calledWith(locationModel.fromJson, dummyCircle);
     sinon.assert.calledWith(locationModel.fromJson, dummyPolygon);
-  }));
+  });
 
   it('throws if start location does not exist', () => {
     assert.throws(() => {
@@ -116,9 +119,9 @@ describe('story', () => {
     }, /Error: Missing "start" screen/);
   });
 
-  it('creates start text screen', sinon.test(function () {
-    this.stub(startScreen, 'create').yields();
-    this.stub(textScreen, 'create');
+  it('creates start text screen', () => {
+    sinon.stub(startScreen, 'create').yields();
+    sinon.stub(textScreen, 'create');
 
     const story = makeStory.fromJson({
       locations: {
@@ -139,7 +142,7 @@ describe('story', () => {
 
     sinon.assert.calledOnce(textScreen.create);
     sinon.assert.calledWith(textScreen.create, div, '## Oh, hi!');
-  }));
+  });
 
   it('throws if start screen has no type', () => {
     assert.throws(() => {
@@ -204,9 +207,9 @@ describe('story', () => {
     }, /Error: Screen "start" has unknown next "missing"/);
   });
 
-  it('creates start input screen', sinon.test(function () {
-    this.stub(startScreen, 'create').yields();
-    this.stub(inputScreen, 'create');
+  it('creates start input screen', () => {
+    sinon.stub(startScreen, 'create').yields();
+    sinon.stub(inputScreen, 'create');
 
     const story = makeStory.fromJson({
       locations: {
@@ -230,7 +233,7 @@ describe('story', () => {
     sinon.assert.calledWith(inputScreen.create, div, '## Hello', {
       answer: 'world'
     });
-  }));
+  });
 
   it('throws if input screen has no text', () => {
     assert.throws(() => {
@@ -269,9 +272,9 @@ describe('story', () => {
     }, /Error: Screen "start" has no next/);
   });
 
-  it('creates start multiple choice screen', sinon.test(function () {
-    this.stub(startScreen, 'create').yields();
-    this.stub(choicesScreen, 'create');
+  it('creates start multiple choice screen', () => {
+    sinon.stub(startScreen, 'create').yields();
+    sinon.stub(choicesScreen, 'create');
 
     const story = makeStory.fromJson({
       locations: {
@@ -298,7 +301,7 @@ describe('story', () => {
       text: 'A',
       next: 'end'
     }]);
-  }));
+  });
 
   it('throws if choices screen has no text', () => {
     assert.throws(() => {
@@ -420,8 +423,8 @@ describe('story', () => {
     }, /Error: Screen "start" has unknown type "unknown"/);
   });
 
-  it('shows next screen on click', sinon.test(function () {
-    this.stub(startScreen, 'create').yields();
+  it('shows next screen on click', () => {
+    sinon.stub(startScreen, 'create').yields();
     const story = makeStory.fromJson({
       locations: {
         start: dummyCircle
@@ -444,10 +447,10 @@ describe('story', () => {
 
     assert.equal(div.querySelector('.text').innerHTML,
       '<h2 id="goodbye">Goodbye</h2>\n');
-  }));
+  });
 
-  it('shows next screen depending on choice', sinon.test(function () {
-    this.stub(startScreen, 'create').yields();
+  it('shows next screen depending on choice', () => {
+    sinon.stub(startScreen, 'create').yields();
     const story = makeStory.fromJson({
       locations: {
         start: dummyCircle
@@ -481,10 +484,10 @@ describe('story', () => {
 
     assert.equal(div.querySelector('.text').innerHTML,
       '<h2 id="goodbye">Goodbye</h2>\n');
-  }));
+  });
 
-  it('shows next screen regardless of choice', sinon.test(function () {
-    this.stub(startScreen, 'create').yields();
+  it('shows next screen regardless of choice', () => {
+    sinon.stub(startScreen, 'create').yields();
     const story = makeStory.fromJson({
       locations: {
         start: dummyCircle
@@ -514,11 +517,11 @@ describe('story', () => {
 
     assert.equal(div.querySelector('.text').innerHTML,
       '<h2 id="goodbye">Goodbye</h2>\n');
-  }));
+  });
 
-  it('creates start navigate screen', sinon.test(function () {
-    this.stub(startScreen, 'create').yields();
-    this.stub(navigateScreen, 'create');
+  it('creates start navigate screen', () => {
+    sinon.stub(startScreen, 'create').yields();
+    sinon.stub(navigateScreen, 'create');
 
     const story = makeStory.fromJson({
       locations: {
@@ -541,7 +544,7 @@ describe('story', () => {
     sinon.assert.calledOnce(navigateScreen.create);
     sinon.assert.calledWith(navigateScreen.create, div,
       sinon.match.instanceOf(locationModel.Circle), {});
-  }));
+  });
 
   it('throws if navigate screen has no location', () => {
     assert.throws(() => {
@@ -610,8 +613,8 @@ describe('story', () => {
     }, /Error: Screen "start" has unknown next "missing"/);
   });
 
-  it('shows next screen when location is reached', sinon.test(function () {
-    this.stub(startScreen, 'create').yields();
+  it('shows next screen when location is reached', () => {
+    sinon.stub(startScreen, 'create').yields();
 
     const story = makeStory.fromJson({
       locations: {
@@ -637,16 +640,16 @@ describe('story', () => {
       longitude: dummyCircle.center.longitude,
       accuracy: 5
     });
-    this.clock.tick(500);
+    clock.tick(500);
     div.querySelector('.footer .next').click();
 
     assert.equal(div.querySelector('.text').innerHTML,
       '<h2 id="goodbye">Goodbye</h2>\n');
-  }));
+  });
 
-  it('passes options to navigate screen', sinon.test(function () {
-    this.stub(startScreen, 'create').yields();
-    this.spy(navigateScreen, 'create');
+  it('passes options to navigate screen', () => {
+    sinon.stub(startScreen, 'create').yields();
+    sinon.spy(navigateScreen, 'create');
     const story = makeStory.fromJson({
       locations: {
         start: dummyPolygon,
@@ -676,10 +679,10 @@ describe('story', () => {
       distance: false,
       compass: false
     });
-  }));
+  });
 
-  it('passes points to finish screen', sinon.test(function () {
-    this.stub(finishScreen, 'create');
+  it('passes points to finish screen', () => {
+    sinon.stub(finishScreen, 'create');
 
     const story = makeStory.fromJson({
       demo: true,
@@ -725,10 +728,10 @@ describe('story', () => {
       time: sinon.match.number,
       points: 7
     });
-  }));
+  });
 
-  it('creates finish screen', sinon.test(function () {
-    this.stub(finishScreen, 'create');
+  it('creates finish screen', () => {
+    sinon.stub(finishScreen, 'create');
 
     const story = makeStory.fromJson({
       demo: true,
@@ -753,7 +756,7 @@ describe('story', () => {
     sinon.assert.calledWith(finishScreen.create, div, undefined, {
       time: sinon.match.number
     });
-  }));
+  });
 
   it('throws if no finish screen exists', () => {
     assert.throws(() => {
@@ -805,7 +808,7 @@ describe('story', () => {
     ), 0);
   });
 
-  it('shows navigate screen on Go! click', sinon.test(function () {
+  it('shows navigate screen on Go! click', () => {
     const story = makeStory.fromJson({
       locations: {
         start: dummyCircle
@@ -838,12 +841,12 @@ describe('story', () => {
       longitude: dummyCircle.center.longitude,
       accuracy: 5
     });
-    this.clock.tick(500);
+    clock.tick(500);
     div.querySelector('.footer .next').click();
 
     assert.equal(div.querySelector('.compass'), null);
     assert.equal(div.querySelector('.distance'), null);
-  }));
+  });
 
   it('throws if location is not used', () => {
     assert.throws(() => {
@@ -919,8 +922,8 @@ describe('story', () => {
     assert.equal(div.querySelector('h2').innerHTML, 'Oh, hi!');
   });
 
-  it('saves current screen name', sinon.test(function () {
-    this.stub(startScreen, 'create').yields();
+  it('saves current screen name', () => {
+    sinon.stub(startScreen, 'create').yields();
     const story = makeStory.fromJson({
       locations: {
         start: dummyCircle
@@ -949,10 +952,10 @@ describe('story', () => {
     div.querySelector('.next').click();
 
     assert.equal(localStorage.getItem('screen'), 'two');
-  }));
+  });
 
-  it('clears saved screen name on finish screen', sinon.test(function () {
-    this.stub(startScreen, 'create').yields();
+  it('clears saved screen name on finish screen', () => {
+    sinon.stub(startScreen, 'create').yields();
     const story = makeStory.fromJson({
       locations: {
         start: dummyCircle
@@ -976,11 +979,11 @@ describe('story', () => {
 
     assert.strictEqual(localStorage.getItem('screen'), null);
     assert.strictEqual(localStorage.getItem('any-unrelated-key'), null);
-  }));
+  });
 
-  it('shows default screen after finish screen', sinon.test(function () {
-    this.stub(startScreen, 'create');
-    this.stub(defaultScreen, 'create');
+  it('shows default screen after finish screen', () => {
+    sinon.stub(startScreen, 'create');
+    sinon.stub(defaultScreen, 'create');
     const story = makeStory.fromJson({
       locations: {
         start: dummyCircle
@@ -1005,11 +1008,11 @@ describe('story', () => {
 
     sinon.assert.calledOnce(defaultScreen.create);
     sinon.assert.calledWith(defaultScreen.create, div);
-  }));
+  });
 
-  it('stores, restores and removes startTime', sinon.test(function () {
-    this.stub(startScreen, 'create').yields();
-    this.clock.tick(60000);
+  it('stores, restores and removes startTime', () => {
+    sinon.stub(startScreen, 'create').yields();
+    clock.tick(60000);
     const json = {
       locations: {
         start: dummyCircle
@@ -1030,17 +1033,17 @@ describe('story', () => {
 
     assert.equal(localStorage.getItem('startTime'), '60000');
 
-    this.clock.tick(35000);
+    clock.tick(35000);
     div = document.createElement('div');
     makeStory.fromJson(json)(div);
     div.querySelector('.next').click();
 
     assert.equal(div.querySelector('.results .value').innerHTML, '0:00:35');
     assert.strictEqual(localStorage.getItem('startTime'), null);
-  }));
+  });
 
-  it('stores, restores and removes points', sinon.test(function () {
-    this.stub(startScreen, 'create').yields();
+  it('stores, restores and removes points', () => {
+    sinon.stub(startScreen, 'create').yields();
     const json = {
       locations: {
         start: dummyCircle
@@ -1080,6 +1083,6 @@ describe('story', () => {
 
     assert.equal(div.querySelector('.results .value').innerHTML, '42');
     assert.strictEqual(localStorage.getItem('points'), null);
-  }));
+  });
 
 });
