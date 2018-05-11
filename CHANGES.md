@@ -1,5 +1,9 @@
 # Changes
 
+## 0.0.12
+
+- Update locatify and fix tests accordingly
+
 ## 0.0.11
 
 - Use Studio Changes for releases
